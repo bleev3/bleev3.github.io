@@ -1,2 +1,6 @@
 remote_theme: pages-themes/architect
-
+navigation:
+  - title: "Home"
+    url: "/"
+  - title: "About"
+    url: "/about.html"
