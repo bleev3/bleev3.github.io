@@ -1,5 +1,2 @@
-remote_theme: pages-themes/architect
-navigation:
-  - title: "Home"
-    url: "/home.html"  
+remote_theme: pages-themes/architect 
 
