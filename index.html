@@ -142,12 +142,19 @@
                                 <p></p>
                                 <p>I needed to set up a virtual environment in Python.</p>
                                 <!-- Python Virtual Environment -->
+                                <img class="img-fluid" src="assets/img/portfolio/fullsize/python_setup.jpg" alt="Python Virtual Environment Setup" />
                                 <p> I also installed the ArduinoBLE library in the Arduino IDE. Then, I got the MAC address
                                      of the Artemis board by running the ble_arduino code.</p>
                                 <!-- MAC Address -->
+                                <img class="img-fluid" src="assets/img/portfolio/fullsize/mac_address.jpg" alt="Mac Address of Artemis" />
+                                <p></p>
+                                <p></p>
                                 <p>Then, the MAC address and UUID was changed in the connections.yaml file 
                                     so that I could connect the Artemis to my computer.</p>
                                 <!-- Changes to Python and Arduino Files -->
+                                <img class="img-fluid" src="assets/img/portfolio/fullsize/ble_python.jpg" alt="Python BLE Changes" />
+                                <p></p>
+                                <img class="img-fluid" src="assets/img/portfolio/fullsize/ble_arduino.jpg" alt="Arduino BLE Changes" />
                                 <p>On the Arduino side, the ble_arduino.ino file provides the MAC address for the Artemis board and 
                                     advertises that this device is available to be connected. We then generate a specific uuid on the 
                                     python side in order to create a unique identifier for our specific Artemis board. 
@@ -160,31 +167,46 @@
                                 <p>(1) I edited the ECHO command on the Arduino side so when it receives a string from the computer, 
                                     it can send back “Robot says ->” along with the original string. </p>
                                 <!-- Echo: Add photo for arduino code and python -->
+                                <img class="img-fluid" src="assets/img/portfolio/fullsize/echo_arduino.jpg" alt="Arduino Echo Changes" /> 
+                                <img class="img-fluid" src="assets/img/portfolio/fullsize/echo_python.jpg" alt="Python BLE Changes" />
                                 <p>(2) I created a new command called SEND_THREE_FLOATS on the Arduino side which parses the three 
                                     floats sent by the computer. Then, it prints out the three floats in the serial monitor.  </p>
                                 <!-- Send Three Floats: Add photo for arduino code and python -->
+                                <img class="img-fluid" src="assets/img/portfolio/fullsize/floats_python.jpg" alt="3 Floats Python" />
+                                <img class="img-fluid" src="assets/img/portfolio/fullsize/floats_arduino.jpg" alt="3 Floats Arduino" />
                                 <p>(3) On the Arduino side, for GET_TIME_MILLIS, I used the currentMillis variable to get 
                                     the current time in milliseconds by calling the millis() function. Then on the python side, 
                                     the current time was sent back to the computer. </p>
                                 <!-- Get Time Millis: Add photo for arduino code and python -->
+                                <img class="img-fluid" src="assets/img/portfolio/fullsize/ms_arduino.jpg" alt="Arduino MS Changes" /> 
+                                <img class="img-fluid" src="assets/img/portfolio/fullsize/ms_python.jpg" alt="Python MS Changes" />
                                 <p>(4) I created a notification handler that takes the response string from the 
                                     Artemis and parses the message, so it retrieves just the time. </p>
                                 <!-- Notification Handler: Add photo for arduino code and python -->
+                                <img class="img-fluid" src="assets/img/portfolio/fullsize/notif_handler.jpg" alt="Python Notification Handler" />
                                  <p>(5) I created a command called GET_DATA which collects and sends data for 10 seconds. 
                                     The notification handler is used to extract the time from the message. 
                                     The effective data transfer rate is 242 messages/10 secs = 24.2 messages/sec.
                                 </p>
                                 <!-- Get Data code: Arduino and Python -->
+                                <img class="img-fluid" src="assets/img/portfolio/fullsize/data_arduino.jpg" alt="Arduino Get Data" /> 
                                  <p>(6) For SEND_TIME_DATA, I first collected the data for 10 seconds into an array of length 700.
                                      Once either the time reached 10 seconds or the array was filled, then we would send each data 
                                      in the array to the computer. </p>
                                 <!-- SEND_TIME_DATA code: Arduino and Python -->
+                                <img class="img-fluid" src="assets/img/portfolio/fullsize/senddata_arduino.jpg" alt="Arduino Send Data" /> 
+                                <img class="img-fluid" src="assets/img/portfolio/fullsize/senddata_python.jpg" alt="Python Send Data" />
                                 <p>(7) For GET_TEMP_READINGS, I used the same structure of collecting the time and temperature for 10 seconds
                                      into arrays of length 700. Then, I would send out the data once the arrays had been filled or we reached 10 seconds.
                                     I also created a notification handler on the python side which would separate the time and temperature 
                                     and put it into time and temp arrays respectively.
                                 </p>
                                 <!-- Notif Handler and Results on Python Side -->
+                                <img class="img-fluid" src="assets/img/portfolio/fullsize/temp_arduino.jpg" alt="Arduino Get Temp" /> 
+                                <img class="img-fluid" src="assets/img/portfolio/fullsize/temp_python.jpg" alt="Python Get Temp" />
+                                <img class="img-fluid" src="assets/img/portfolio/fullsize/time_data.jpg" alt="Time Data" /> 
+                                <img class="img-fluid" src="assets/img/portfolio/fullsize/temp_data.jpg" alt="Temp Data" />
+                                <p></p>
                                  <p>(8) The first method where you send live data allows you to get the data almost instantaneously since you 
                                     send the data right after you have received the measurement.  This method can be useful when you want to make 
                                     quick decisions based on real time data. 
@@ -204,10 +226,11 @@
                                     In a separate loop, I calculated the byte length and data rate and then generated a graph shown below.
                                 </p>
                                 <!-- Code for Data Rate and Overhead -->
+                                <img class="img-fluid" src="assets/img/portfolio/fullsize/datarate_python.jpg" alt="Python Data Rate and Overhead" /> 
+                                <img class="img-fluid" src="assets/img/portfolio/fullsize/datarate_graph.jpg" alt="Data Rate Graph" />
                                 <p>
-                                    The data rate for 5-byte replies is around 15 bytes/second while 120-byte replies is about 20 bytes/second. 
-                                    There is a small dip between 90- and 100-byte messages but that may be due to other processes running in the 
-                                    background on my computer. Short replies introduce a lot of overhead because you need to send multiple packets 
+                                    The data rate for 5-byte replies is around 20 bytes/second while 120-byte replies is about 500 bytes/second. 
+                                    Short replies introduce a lot of overhead because you need to send multiple packets 
                                     to transmit a large amount of data. Each message contains a certain amount of overhead. As a result, since you 
                                     need to send more packets, there will be a greater total amount of overhead as compared to larger packets.
                                     Larger replies help to reduce overhead because you can use fewer packets to send over a large amount of data. 
