@@ -136,6 +136,94 @@
                                     <iframe width="450" height="315" src="https://www.youtube.com/embed/rTipSdipOX4"
                                     frameborder="0" allowfullscreen></iframe>
                                 </div>
+                                <h9 class="mt-4"> Lab 1B: Bluetooth</h9>
+                                <p></p>
+                                <h10 class="mt-4"><u>Prelab</u></h10>
+                                <p></p>
+                                <p>I needed to set up a virtual environment in Python.</p>
+                                <!-- Python Virtual Environment -->
+                                <p> I also installed the ArduinoBLE library in the Arduino IDE. Then, I got the MAC address
+                                     of the Artemis board by running the ble_arduino code.</p>
+                                <!-- MAC Address -->
+                                <p>Then, the MAC address and UUID was changed in the connections.yaml file 
+                                    so that I could connect the Artemis to my computer.</p>
+                                <!-- Changes to Python and Arduino Files -->
+                                <p>On the Arduino side, the ble_arduino.ino file provides the MAC address for the Artemis board and 
+                                    advertises that this device is available to be connected. We then generate a specific uuid on the 
+                                    python side in order to create a unique identifier for our specific Artemis board. 
+                                    Using python, the computer will scan for available devices and search for my Artemis board that has a 
+                                    unqiue MAC address and UUID pair. Once connected, the Artemis and computer can exchange messages back 
+                                    and forth using Bluetooth. 
+                                    </p>
+                                <h11 class="mt-4"><u>Tasks</u></h11>
+                                <p></p>
+                                <p>(1) I edited the ECHO command on the Arduino side so when it receives a string from the computer, 
+                                    it can send back “Robot says ->” along with the original string. </p>
+                                <!-- Echo: Add photo for arduino code and python -->
+                                <p>(2) I created a new command called SEND_THREE_FLOATS on the Arduino side which parses the three 
+                                    floats sent by the computer. Then, it prints out the three floats in the serial monitor.  </p>
+                                <!-- Send Three Floats: Add photo for arduino code and python -->
+                                <p>(3) On the Arduino side, for GET_TIME_MILLIS, I used the currentMillis variable to get 
+                                    the current time in milliseconds by calling the millis() function. Then on the python side, 
+                                    the current time was sent back to the computer. </p>
+                                <!-- Get Time Millis: Add photo for arduino code and python -->
+                                <p>(4) I created a notification handler that takes the response string from the 
+                                    Artemis and parses the message, so it retrieves just the time. </p>
+                                <!-- Notification Handler: Add photo for arduino code and python -->
+                                 <p>(5) I created a command called GET_DATA which collects and sends data for 10 seconds. 
+                                    The notification handler is used to extract the time from the message. 
+                                    The effective data transfer rate is 242 messages/10 secs = 24.2 messages/sec.
+                                </p>
+                                <!-- Get Data code: Arduino and Python -->
+                                 <p>(6) For SEND_TIME_DATA, I first collected the data for 10 seconds into an array of length 700.
+                                     Once either the time reached 10 seconds or the array was filled, then we would send each data 
+                                     in the array to the computer. </p>
+                                <!-- SEND_TIME_DATA code: Arduino and Python -->
+                                <p>(7) For GET_TEMP_READINGS, I used the same structure of collecting the time and temperature for 10 seconds
+                                     into arrays of length 700. Then, I would send out the data once the arrays had been filled or we reached 10 seconds.
+                                    I also created a notification handler on the python side which would separate the time and temperature 
+                                    and put it into time and temp arrays respectively.
+                                </p>
+                                <!-- Notif Handler and Results on Python Side -->
+                                 <p>(8) The first method where you send live data allows you to get the data almost instantaneously since you 
+                                    send the data right after you have received the measurement.  This method can be useful when you want to make 
+                                    quick decisions based on real time data. 
+                                    The second method where you send data after it has been collected in an array allows you to record the data at 
+                                    a much faster rate since there are no interrupts from the computer or the BLE service. The second method is useful 
+                                    when you want to send data after you have completed a trial or a test. 
+                                    I am sending floats to represent the time and the temperature. Each float is 4 bytes. In turn, if we have 
+                                    384kB of RAM, we can store 384kB/8 bytes which is 48,000 data points. 
+                                </p>
+                                <h9 class="mt-4"><u>Additional Tasks</u></h9>
+                                <p></p>
+                                <h10 class="mt-4"><u>Effective Data Rate and Overhead</u></h10>
+                                <p>I tested the data rate by first sending a string called “Hello”. 
+                                    Then, I created a function similar to ECHO called ECHO_BYTES_BACK. Then I created a loop that increments the 
+                                    message being sent by 5 bytes each time. 
+                                    I would calculate the difference between when the message was sent and when the response message was received. 
+                                    In a separate loop, I calculated the byte length and data rate and then generated a graph shown below.
+                                </p>
+                                <!-- Code for Data Rate and Overhead -->
+                                <p>
+                                    The data rate for 5-byte replies is around 15 bytes/second while 120-byte replies is about 20 bytes/second. 
+                                    There is a small dip between 90- and 100-byte messages but that may be due to other processes running in the 
+                                    background on my computer. Short replies introduce a lot of overhead because you need to send multiple packets 
+                                    to transmit a large amount of data. Each message contains a certain amount of overhead. As a result, since you 
+                                    need to send more packets, there will be a greater total amount of overhead as compared to larger packets.
+                                    Larger replies help to reduce overhead because you can use fewer packets to send over a large amount of data. 
+                                    Because each message contains a large amount of data, the overhead is small as compared to the size of the actual 
+                                    data you want to send. </p>
+                                <h11 class="mt-4"><u>Reliability</u></h11>
+                                <p>When you send data at a higher rate from the robot to the computer, the computer is 
+                                    able to read all of the data published. I tested this by sending over an array that 
+                                    had 1000 entries containing the time in milliseconds from the Artemis to the computer 
+                                    and the computer was able to receive all 1000 entries. The caveat is that since the 
+                                    data points were floats, there may have been a smaller overhead resulting in less data 
+                                    being transmitted overall.</p>
+                                <h12 class="mt-4"><u>Discussion</u></h12>
+                                <p>I learned about the onboard Artemis board sensors and how Bluetooth can be used to transmit 
+                                    data between Artemis and the computer. It was also interesting to see how the data rate could 
+                                    increase or decrease depending on whether there were print statements in both the Arduino and Python code.</p>
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
