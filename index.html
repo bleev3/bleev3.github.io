@@ -258,7 +258,7 @@
                 <!-- Portfolio Item 2 -->
                 <div class="col-lg-4 col-sm-6">
                     <a class="portfolio-box" href="#" data-bs-toggle="modal" data-bs-target="#portfolioModal2">
-                        <img class="img-fluid" src="assets/img/portfolio/thumbnails/2.jpg" alt="..." />
+                        <img class="img-fluid" src="assets/img/portfolio/thumbnails/imu.jpg" alt="..." />
                         <div class="portfolio-box-caption">
                             <div class="project-category text-white-50">Lab 2</div>
                             <div class="project-name">Project 2</div>
@@ -271,12 +271,219 @@
                     <div class="modal-dialog modal-lg">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h5 class="modal-title" id="portfolioModal2Label">Project 2</h5>
+                                <h5 class="modal-title" id="portfolioModal2Label">Lab 2: IMU</h5>
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
-                                <img class="img-fluid" src="assets/img/portfolio/fullsize/2.jpg" alt="..." />
-                                <p class="mt-3">Description for Project 2...</p>
+                                <img class="img-fluid" src="assets/img/portfolio/fullsize/imu.jpg" alt="..." />
+                                <p class="mt-3">In this lab, the objective was to become familiar with the accelerometer and gyroscope on the IMU.</p>
+                                <h7 class="mt-4"><u>IMU Setup</u></h7>
+                                <p class="mt-3">For this part of the lab, I had to install the Sparkfun 9DOF IMU Breakout ICM 20948 Arduino Library.
+                                    To connect the IMU to the Artemis board, I used QWICC connectors.
+                                </p>
+                                <!-- QWICC Connection -->
+                                <img class="img-fluid" src="assets/img/portfolio/fullsize/qwicc_connect.jpg" alt="QWICC Connection of Artemis and IMU" />
+                                <p class="mt-3">For this part of the lab, I had to install the Sparkfun 9DOF IMU Breakout ICM 20948 Arduino Library.
+                                    To connect the IMU to the Artemis board, I used QWICC connectors.
+                                </p>
+                                <h7 class="mt-4"><u>IMU Example Code</u></h7>
+                                <p>The AD0_VAL corresponds to the value of the last bit of the I2C address which can be changed depending on 
+                                    the I2C address configuration of the board. In my case, it is 1.</p>
+                                <p>As I flip the board, the z value on the acceleration and gyroscope data become negative. As I rotate the board (ie on the y axis), 
+                                    then the x and y values change to be either positive or negative. When I accelerate the board, the x, y, and z values increase.
+                                </p>
+                                <!-- Example Code Video -->
+                                <div class="embed-container">
+                                    <iframe width="400" height="400" src="https://www.youtube.com/embed/rnD5dqAI56E"
+                                    frameborder="0" allowfullscreen></iframe>
+                                </div>
+                                <p> I also made the LED blink 3 to 4 times to indicate that the IMU was being set up properly.</p>
+                                <!-- Blinking LED Video -->
+                                <div class="embed-container">
+                                    <iframe width="400" height="400" src="https://www.youtube.com/embed/84K7RXUc_K0" 
+                                    frameborder="0" allowfullscreen></iframe>
+                                </div>
+                                <h8 class="mt-4"><u>Accelerometer</u></h8>
+                                <p>I used the following equations from class to compute pitch and roll.</p>
+                                <!-- Pitch and Roll Equations -->
+                                <img class="img-fluid" src="assets/img/portfolio/fullsize/accel_eqns.jpg" alt="Accelerometer Equations" />
+                                <p>Here is the data for the accelerometer at 0 degrees for both pitch and roll.</p>
+                                <!-- 0 degrees roll -->
+                                <img class="img-fluid" src="assets/img/portfolio/fullsize/zero_degs.jpg" alt="0 degrees for the IMU" />
+                                <p>Here is the data for the accelerometer at -90 and 90 degrees respectively for roll.</p>
+                                <!-- -90 degrees roll -->
+                                <img class="img-fluid" src="assets/img/portfolio/fullsize/neg_90_degs.jpg" alt="Roll -90 degrees for the IMU" />
+                                <p></p>
+                                <!-- 90 degrees roll -->
+                                <img class="img-fluid" src="assets/img/portfolio/fullsize/90_degs.jpg" alt="Roll 90 degrees for the IMU" />
+                                <p>Here is the data for the accelerometer at -90 and 90 degrees respectively for pitch.</p>
+                                <!-- -90 degrees pitch -->
+                                <img class="img-fluid" src="assets/img/portfolio/fullsize/pitch_neg_90_degs.jpg" alt="Pitch -90 degrees for the IMU" />
+                                <p></p>
+                                <!-- 90 degrees pitch -->
+                                <img class="img-fluid" src="assets/img/portfolio/fullsize/pitch_90_degs.jpg" alt="Pitch 90 degrees for the IMU" />
+                                <p>My accelerometer is quite close to the actual value of -90 and 90 degrees for both pitch and roll. It is only off by about 1-2 degrees.
+                                    Therefore, I did not do a 2 point calibration.
+                                </p>
+                                <h9 class="mt-4"><u>Accelerometer Noise</u></h9>
+                                <p>Based on the graphs shown below for pitch and roll, I determined the cutoff frquency to be about 5 Hz
+                                    since that was where the noise started to decrease significantly.
+                                </p>
+                                <!-- Pitch Time Graph -->
+                                <img class="img-fluid" src="assets/img/portfolio/fullsize/pitch_accel.jpg" alt="Pitch Time Graph" />
+                                <p></p>
+                                <!-- Pitch Fourier Transform Graph -->
+                                <img class="img-fluid" src="assets/img/portfolio/fullsize/pitch_accel_ft.jpg" alt="Pitch FT Graph" />
+                                 <!-- Roll Time Graph -->
+                                 <img class="img-fluid" src="assets/img/portfolio/fullsize/roll_accel.jpg" alt="Roll Time Graph" />
+                                 <p></p>
+                                 <!-- Roll Fourier Transform Graph -->
+                                 <img class="img-fluid" src="assets/img/portfolio/fullsize/roll_accel_ft.jpg" alt="Roll FT Graph" />
+                                <h10 class="mt-4"><u>Accelerometer Low Pass Filter</u></h10>
+                                <p>I used the following equation from class to compute the low pass filter for the pitch and roll of the accelerometer.</p>
+                                 <!-- Low Pass Filter Equations -->
+                                 <img class="img-fluid" src="assets/img/portfolio/fullsize/lpf_accel.jpg" alt="Low Pass Filter Equation" />
+                                <p>
+                                    Since the sampling rate was 398.72 for pitch, the alpha value was determined to be 0.0451
+                                    For the roll, the sampling rate was 362.58. Therefore, the alpha value was 0.0797.
+                                    As can be seen from the graphs shown below, the low pass filter eliminates most of the noise (even during vibrations) in the 
+                                    accelerometer measurements for pitch and roll when using the alpha values mentioned above.
+                                </p>
+                                <!-- Pitch Low Pass Filter Time -->
+                                <img class="img-fluid" src="assets/img/portfolio/fullsize/pitch_lpf_time.jpg" alt="Pitch LPF Time" />
+                                <!-- Pitch Low Pass Filter Fourier Transform -->
+                                <img class="img-fluid" src="assets/img/portfolio/fullsize/pitch_lpf_ft.jpg" alt="Pitch LPF FT" />
+                                <!-- Roll Low Pass Filter Time -->
+                                <img class="img-fluid" src="assets/img/portfolio/fullsize/roll_lpf_time.jpg" alt="Roll LPF Time" />
+                                <!-- Roll Low Pass Filter Fourier Transform -->
+                                <img class="img-fluid" src="assets/img/portfolio/fullsize/roll_lpf_ft.jpg" alt="Roll LPF FT" />
+                                <h11 class="mt-4"><u>Gyroscope</u></h11>
+                                <p>These are the equations that I used to compute the pitch, roll, and yaw for the gyroscope.</p>
+                                <!-- Gyroscope Equations -->
+                                <img class="img-fluid" src="assets/img/portfolio/fullsize/gyro_eqns.jpg" alt="Gyroscope Equations" />
+                                <p>Below are the pitch, roll, and yaw data from the gyroscope.</p>
+                                <!-- Gyroscope Pitch, Roll, and Yaw -->
+                                <img class="img-fluid" src="assets/img/portfolio/fullsize/gyro_time_graph.jpg" alt="Gyroscope Time Graph" />
+                                <img class="img-fluid" src="assets/img/portfolio/fullsize/gyro_ft_graph.jpg" alt="Gyroscope FT Graph" />
+                                <p>Compared to the accelerometer, the gyroscope is more susceptiple to noise and small vibrations. It is due
+                                    to the gyroscope taking the result of the previous measurements and adding it to the current measurement
+                                    in order to get the estimated angle for pitch, roll, and yaw.
+                                    Therefore, small errors in the predicted angle can accumulate.
+                                </p>
+                                <!-- Comparison between pitch and roll for the accelerometer and gyroscope -->
+                                <img class="img-fluid" src="assets/img/portfolio/fullsize/pitch_gyroaccel_time.jpg" alt="Pitch Gyroscope & Accel Time Graph" />
+                                <img class="img-fluid" src="assets/img/portfolio/fullsize/pitch_gyroaccel_ft.jpg" alt="Pitch Gyroscope FT Graph" />
+                                <img class="img-fluid" src="assets/img/portfolio/fullsize/roll_gyroaccel_time.jpg" alt="Roll Gyroscope & Accel Time Graph" />
+                                <img class="img-fluid" src="assets/img/portfolio/fullsize/roll_gyroaccel_ft.jpg" alt="Roll Gyroscope FT Graph" />
+                                <!-- LPF Comparison between pitch and roll for accel and gyro data -->
+                                <img class="img-fluid" src="assets/img/portfolio/fullsize/lpf_pitch_gyroaccel_time.jpg" alt="LPF Pitch Gyroscope & Accel Time Graph" />
+                                <img class="img-fluid" src="assets/img/portfolio/fullsize/lpf_pitch_gyroaccel_ft.jpg" alt="LPF Pitch Gyroscope FT Graph" />
+                                <img class="img-fluid" src="assets/img/portfolio/fullsize/lpf_roll_gyroaccel_time.jpg" alt="LPF Roll Gyroscope & Accel Time Graph" />
+                                <img class="img-fluid" src="assets/img/portfolio/fullsize/lpf_roll_gyroaccel_ft.jpg" alt="LPF Roll Gyroscope FT Graph" />
+                                <p>As the sampling frequency increase, the estimated angles from the gyroscope becomes more accurate
+                                    since there are more data points which decreases the error.
+                                </p>
+                                <p></p>
+                                <p>This is the sampling frequency when it is set at 10 Hz: </p>
+                                <!-- Sampling Frequency for Gyroscope 10 Hz -->
+                                <img class="img-fluid" src="assets/img/portfolio/fullsize/10hz_lpf_roll_gyroaccel_time.jpg" alt="10 Hz Gyroscope Time Graph" />
+                                <img class="img-fluid" src="assets/img/portfolio/fullsize/10hz_lpf_roll_gyroaccel_ft.jpg" alt="10 Hz Gyroscope FT Graph" />
+                                <p>This is the sampling frequency when it is set at 10 kHz: </p>
+                                <!-- Sampling Frequency for Gyroscope 10 kHz -->
+                                <img class="img-fluid" src="assets/img/portfolio/fullsize/10khz_lpf_roll_gyroaccel_time.jpg" alt="10 kHz Gyroscope Time Graph" />
+                                <img class="img-fluid" src="assets/img/portfolio/fullsize/10khz_lpf_roll_gyroaccel_ft.jpg" alt="10 kHz Gyroscope FT Graph" />
+                                <h12 class="mt-4"><u>Complementary Filter</u></h12>
+                                <p>This is the equation from class that I used for the complementary filter.</p>
+                                <!-- Complementary Filter Equation -->
+                                <img class="img-fluid" src="assets/img/portfolio/fullsize/complementary_filter.jpg" alt="CF Equations" />
+                                <p>I used an alpha value of 0.85 for the complementary filter meaning that most of the 
+                                    weight used to calculate the angle for pitch/roll is on the accelerometer data. I chose 
+                                    to use the accelerometer data more because it does not flucuate as much with noise.
+                                    The complementary filter works best between the -90 and 90 degree range.
+                                </p>
+                                <!-- Complementary Filter Graphs -->
+                                <img class="img-fluid" src="assets/img/portfolio/fullsize/cf_pitch.jpg" alt="CF Pitch" />
+                                <img class="img-fluid" src="assets/img/portfolio/fullsize/cf_roll.jpg" alt="CF Roll" />
+                                <!-- <h8 class="mt-4"><u>Tasks</u></h8>
+                                <p class="mt-3">I ran the blink example code by going to Examples > 01.Basics > Blink 
+                                    which blinks the onboard LED on and off.</p>
+                                Blink LED Video
+                                <div class="embed-container">
+                                    <iframe width="400" height="400" src="https://www.youtube.com/embed/yFZzJn-5-NY"
+                                    frameborder="0" allowfullscreen></iframe>
+                                </div>
+                                <p class="mt-3">I ran the serial example code by going to 
+                                    Examples > Apollo3 > Example04_Serial which echos back any message 
+                                    sent to the serial monitor.</p>
+                                Serial Print Video
+                                <div class="embed-container">
+                                    <iframe width="450" height="315" src="https://www.youtube.com/embed/ViV22BiOI-w"
+                                    frameborder="0" allowfullscreen></iframe>
+                                </div>
+
+                                <p class="mt-3">I measured the temperature using the analog read example
+                                     by going to Examples > Apollo3 > Example2_analogRead. As I blew on it, 
+                                     the temperature went up slightly.</p>
+                                Temperature Video
+                                <div class="embed-container">
+                                    <iframe width="450" height="315" src="https://www.youtube.com/embed/9BCm2T73VUQ"
+                                    frameborder="0" allowfullscreen></iframe>
+                                </div>
+                                <p class="mt-3">I tested the microphone on the board by running the 
+                                    following example code Example > PDM > Example1_MicrophoneOutput. 
+                                    As I whistled, the frequency increased from around 600 to over 1000.</p>
+                                Microphone Video
+                                <div class="embed-container">
+                                    <iframe width="450" height="315" src="https://www.youtube.com/embed/drJh7VLLExg"
+                                    frameborder="0" allowfullscreen></iframe>
+                                </div>
+                                <p class="mt-3">For the final task, I modified the blink demo code so that when the 
+                                    microphone detected a C note, then the LED would blink. Because of the app that 
+                                    I was using to generate the C note, the frequency for the C note was registering between 1310 
+                                    and 1320.</p>
+                                C Note code
+                                <script src="https://gist.github.com/bleev3/a3130f67e5fbfdd1bd8316943d2bfd02.js"></script>
+                                C Note Blink Video
+                                <div class="embed-container">
+                                    <iframe width="450" height="315" src="https://www.youtube.com/embed/rTipSdipOX4"
+                                    frameborder="0" allowfullscreen></iframe>
+                                </div>
+                                <h9 class="mt-4"> Lab 1B: Bluetooth</h9>
+                                <p></p>
+                                <h10 class="mt-4"><u>Prelab</u></h10>
+                                <p></p>
+                                <p>I needed to set up a virtual environment in Python.</p>
+                                Python Virtual Environment
+                                <img class="img-fluid" src="assets/img/portfolio/fullsize/python_setup.jpg" alt="Python Virtual Environment Setup" />
+                                <p> I also installed the ArduinoBLE library in the Arduino IDE. Then, I got the MAC address
+                                     of the Artemis board by running the ble_arduino code.</p>
+                                MAC Address
+                                <img class="img-fluid" src="assets/img/portfolio/fullsize/mac_address.jpg" alt="Mac Address of Artemis" />
+                                <p></p>
+                                <p></p>
+                                <p>Then, the MAC address and UUID was changed in the connections.yaml file 
+                                    so that I could connect the Artemis to my computer.</p>
+                                Changes to Python and Arduino Files
+                                <img class="img-fluid" src="assets/img/portfolio/fullsize/ble_python.jpg" alt="Python BLE Changes" />
+                                <p></p>
+                                <img class="img-fluid" src="assets/img/portfolio/fullsize/ble_arduino.jpg" alt="Arduino BLE Changes" />
+                                <p>On the Arduino side, the ble_arduino.ino file provides the MAC address for the Artemis board and 
+                                    advertises that this device is available to be connected. We then generate a specific uuid on the 
+                                    python side in order to create a unique identifier for our specific Artemis board. 
+                                    Using python, the computer will scan for available devices and search for my Artemis board that has a 
+                                    unqiue MAC address and UUID pair. Once connected, the Artemis and computer can exchange messages back 
+                                    and forth using Bluetooth. 
+                                    </p>
+                                <h11 class="mt-4"><u>Tasks</u></h11>
+                                <p></p>
+                                <p>(1) I edited the ECHO command on the Arduino side so when it receives a string from the computer, 
+                                    it can send back “Robot says ->” along with the original string. </p> -->
+                                <!-- Echo: Add photo for arduino code and python
+                                <img class="img-fluid" src="assets/img/portfolio/fullsize/echo_arduino.jpg" alt="Arduino Echo Changes" /> 
+                                <img class="img-fluid" src="assets/img/portfolio/fullsize/echo_python.jpg" alt="Python BLE Changes" />
+                                <p>(2) I created a new command called SEND_THREE_FLOATS on the Arduino side which parses the three 
+                                    floats sent by the computer. Then, it prints out the three floats in the serial monitor.  </p>
+                                Send Three Floats: Add photo for arduino code and python --> 
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
