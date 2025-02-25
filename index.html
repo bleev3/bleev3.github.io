@@ -187,6 +187,12 @@
                                 <p>The ranging time for the short mode is approximately 29 ms since I need to wait for the ToF sensors to collect data. </p>
                                 <!-- Ranging Time of ToF -->
                                 <img class="img-fluid" src="assets/img/portfolio/fullsize/rangetime_tof.jpg" alt="Range Time of ToF Sensor" />
+                                <p>When I varied the ranging time from 20 to 35 to 50 to 65 to 80 to 100 ms and measured the distance which I set to a fixed distance of 500 mm,
+                                    the best ranging times were approximately 20 ms and 50 ms. 20 ms was the better ranging time on average.
+                                </p>
+                                <!-- Ranging Time Graph -->
+                                <img class="img-fluid" src="assets/img/portfolio/fullsize/ranging_time.jpg" alt="Ranging Time of ToF Sensor" />
+                                <img class="img-fluid" src="assets/img/portfolio/fullsize/ranging_time_20ms.jpg" alt="Ranging Time for 20 ms of ToF Sensor" />
                                 <p><b>ToF Sensors Working in Parallel</b></p>
                                 <p>In order to get both ToF sensors to work in parallel, I utilized the XSHUT pin. I initialized one ToF sensor's (sensor 2) so that it used the XSHUT pin which is 
                                     pin 2 (A2 on the board). Then, I set ToF sensor 1 to have a different I2C address while keeping sensor 2 off by setting pin 2 low. Once the I2C address for 
