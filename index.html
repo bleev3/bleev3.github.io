@@ -100,16 +100,228 @@
                         </div>
                     </a>
                 </div>
+                <!-- Portfolio Item 4 -->
+                <div class="col-lg-4 col-sm-6">
+                    <a class="portfolio-box" href="#" data-bs-toggle="modal" data-bs-target="#portfolioModal4">
+                        <img class="img-fluid" src="assets/img/portfolio/thumbnails/robot_assembly.jpg" alt="..." />
+                        <div class="portfolio-box-caption">
+                            <div class="project-category text-white-50">Lab 4</div>
+                            <div class="project-name">Motor Drivers and Open Loop Control</div>
+                        </div>
+                    </a>
+                </div>
 
 
                 <!-- All Modals/Content for Labs Go Here -->
+                
+                <!-- Modal 4 -->
+                <div class="modal fade" id="portfolioModal4" tabindex="-1" aria-labelledby="portfolioModal4Label" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="portfolioModal4Label">Lab 4: Motor Drivers and Open Loop Control</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <img class="img-fluid" src="assets/img/portfolio/thumbnails/robot_assembly.jpg" alt="Fully Assembled Car" />
+                                <p>In this lab, the objective was to explore the DRV8833 Dual Motor Driver Carriers, assemble our robot, and 
+                                    use open loop control in order to control our robot.
+                                </p>
+                                <h7 class="mt-4"><u>Prelab</u></h7>
+                                <p></p>
+                                <h7 class="mt-4"><b>Motor Driver Wiring Diagram</b></h7>
+                                <p></p>
+                                <p>For the motor drivers, I had to parallel couple the inputs and outputs together in order
+                                    to supply enough current to the motor to make the robot move. I connected AOUT1 and BOUT1 to one 
+                                    side of the motor and AOUT2 and BOUT2 to the other side of the motor. For Motor A,
+                                    I connected AIN1/BIN1 to pin A0 on the Artemis board and AIN2/BIN2 to pin A3.
+                                    For Motor B, I connected AIN1/BIN1 to pin A1 on the Artemis board and AIN2/BIN2 to pin A5.
+                                    A0, A1, A3, and A5 pins were used since according to the datasheet, these are analog pins 
+                                    that can use analogWrite() to write PWM signals to the motor drivers.
+
+                                </p>
+                                <img class="img-fluid" src="assets/img/portfolio/fullsize/motor_diag.jpg" alt="Motor Driver Wiring Diagrams" />
+                                <p></p>
+                                <h7 class="mt-4"><b>Batteries</b></h7>
+                                <p></p>
+                                <p>We need two different batteries to power the motor drivers. The 750 mAh battery is used to 
+                                    power the Artemis board so that we can send the PWM signals to the input pins of the motor driver.
+                                    The 850 mAh battery is used to power the output pins of the motor drivers in order to supply enough
+                                    current to the motors.
+                                </p>
+                                <p></p>
+                                <h7 class="mt-4"><u>Tasks</u></h7>
+                                <p><b>Soldering and Testing Motor Drivers</b></p>
+                                <p></p>
+                                <!-- Soldering and Testing PWM Signal -->
+                                <p>For the motor drivers, I first parallel coupled the inputs and outputs together by using one wire for A1/A2 and one wire 
+                                    for A2/B2. Then, I connected a third wire that attaches to the wires coming out from A1/B1 and A2/B2.
+                                    Then, I added heat shrink over the three wires. For testing, I first connected one motor driver to an external power
+                                    supply which I set to 3.7V since that is approximately the voltage coming out of the Artemis board.
+                                    I then scoped the output using the oscillscope to ensure that I was getting the expected
+                                    PWM signal on the motor driver. 
+                                </p>
+                                <p></p>
+                                <p><b>Setup for Oscilloscope and Power Supply</b></p>
+                                <!-- Power Supply Settings -->
+                                <img class="img-fluid" src="assets/img/portfolio/fullsize/3.7_power.jpg" alt="Power Supply Settings" />
+                                <!-- Setup for Motor Driver and Power Supply/Oscilloscope -->
+                                <img class="img-fluid" src="assets/img/portfolio/fullsize/oscill_setup.jpg" alt="Motor Driver Connected to Power Supply and Oscilloscope" />
+                                <!-- Testing Motor Driver with Power Supply -->
+                                <p><b>Results from Oscilloscope</b></p>
+                                <p>I created a PWM signal using analogWrite(). Since the board takes in 8 bit values, the maximum value is 255.
+                                    As a result, since I set analogWrite() to 50, the duty cycle should be 50/255 = ~ 20% duty cycle. The picture shows the square wave on the 
+                                    oscilloscope when scoping the output which is what I expected.
+                                    The first set of pictures demonstrates the PWM signal working for AOUT1/BOUT1.
+                                    The second set of pictures demonstrates the PWM signal working for AOUT2/BOUT2.
+                                </p>
+                                <!-- Results from Oscilloscope with Corresponding Code -->
+                                <!-- Motor A  -->
+                                <script src="https://gist.github.com/bleev3/13a33b6cf0b5aa1d3d2a817afcf3e75e.js"></script>
+                                <p></p>
+                                <img class="img-fluid" src="assets/img/portfolio/fullsize/motora_oscill.jpg" alt="Motor A Oscillscope Results" />
+                                <!-- Motor B -->
+                                <script src="https://gist.github.com/bleev3/d87fedccaab66047759bad24b3e2ce94.js"></script>
+                                <p></p>
+                                <img class="img-fluid" src="assets/img/portfolio/fullsize/motorb_oscill.jpg" alt="Motor B Oscilloscope Results" />
+                                <p><b>Testing Motor Drivers on Car</b></p>
+                                <p></p>
+                                <p>Then, I individually tested the motor drivers
+                                    when they were hooked up to the motors on the car and the  power supply which was set at 3.7V.
+                                    Below are the two motors working while connected the power supply.  </p>
+                                <p></p>
+                                <!-- Testing Motor Driver with Power Supply -->
+                                <!-- Right Wheels -->
+                                <div class="embed-container">
+                                    <iframe width="400" height="400" src="https://www.youtube.com/embed/qsW0SYwT--Y"
+                                    frameborder="0" allowfullscreen></iframe>
+                                </div>
+                                <!-- Left Wheels -->
+                                <div class="embed-container">
+                                    <iframe width="400" height="400" src="https://www.youtube.com/embed/vRfbEPewYVU"
+                                    frameborder="0" allowfullscreen></iframe>
+                                </div>
+
+                                <p>Then, I tested the motor drivers out by connecting them to the 850 mAh battery. Below are videos showing the 
+                                    two motors working while connected to the battery.
+                                </p>
+                                <!-- Testing Motor Driver with Battery -->
+                                <!-- Right Wheels  -->
+                                <div class="embed-container">
+                                    <iframe width="400" height="400" src="https://www.youtube.com/embed/VukFeswSxjk"
+                                    frameborder="0" allowfullscreen></iframe>
+                                </div>
+                                <!-- Left Wheels -->
+                                <div class="embed-container">
+                                    <iframe width="400" height="400" src="https://www.youtube.com/embed/Bw1bhxY-Gdc"
+                                    frameborder="0" allowfullscreen></iframe>
+                                </div>
+
+                                <!-- Two Wheel Spin -->
+                                <div class="embed-container">
+                                    <iframe width="400" height="400" src="https://www.youtube.com/embed/Y0NYz6Zvmp0 "
+                                    frameborder="0" allowfullscreen></iframe>
+                                </div>
+
+                                <p><b>Assembling the Car</b></p>
+                                <p></p>
+                                <p>Finally, I was able to assemble the car. I put my ToF sensors on the front and side of the car to get a wider range of visibility
+                                    of my surroundings.
+                                    I put the IMU on top of the car. I put the Artemis board, 750 mAh battery, and two motor drivers in the back of the car. I secured everything
+                                    using double sided tape and rubber bands.
+                                </p>
+                                <!-- Finalized Assembly of Car -->
+                                <img class="img-fluid" src="assets/img/portfolio/fullsize/labelled_robot.jpg" alt="Assembled Robot" />
+                                <p>Then, I ran the car on the ground by making the car move forward until the time reached 10 seconds which is when I programmed the car
+                                    to stop. As you can see, the car has a slight left bias which I will address in a
+                                    later section.
+                                </p>
+                                <!-- Video of Car Running on Ground -->
+                                <div class="embed-container">
+                                    <iframe width="400" height="400" src="https://www.youtube.com/embed/96bbiqEp3Vk"
+                                    frameborder="0" allowfullscreen></iframe>
+                                </div>
+                                <p></p>
+                                <p><b>Lower Limit of PWM</b></p>
+                                <p></p>
+                                <p>I experimented by manually changing the PWM signal down from the working value of 50 until
+                                    the wheels just started to turn while on the ground. I tried PWM values of 50, 45, 40, 35, and then 30.
+                                    I found the lower limit of the PWM to be 30 in order to start moving car. 
+                                </p>
+                                <!-- Lower Limit PWM Start Code -->
+                                <script src="https://gist.github.com/bleev3/3588c2f976b92af9380a3a38860499d6.js"></script>
+                                <!-- Lower Limit PWM to get Car Started -->
+                                <div class="embed-container">
+                                    <iframe width="400" height="400" src="https://www.youtube.com/embed/Lf2C-Ay_uiQ"
+                                    frameborder="0" allowfullscreen></iframe>
+                                </div>
+                                <p></p>
+                                <!-- Calibrate to make Car Go in Straight Line -->
+                                <p><b>Calibration Factor</b></p>
+                                <p></p>
+                                <p>I want to make the car move straight. In order to do that, I need to add in a calibration factor. Since there is a left bias, I knew that I needed to steer the car more towards the right. In order to do that,
+                                    I needed to add a calibration to the left wheels to make the car turn right. Through experimentation by manually changing the PWM signal sent to 
+                                    the motor drivers, I found the calibration factor to be 1.45. Below is a video showing the car going relatively straight.
+                                </p>
+                                <!-- Calibration Code -->
+                                <script src="https://gist.github.com/bleev3/a5ed8fb7c112ad7e19b4723364190b45.js"></script>
+                                <!-- Video of Car Going in Straight Line -->
+                                <p></p>
+                                <div class="embed-container">
+                                    <iframe width="400" height="400" src="https://www.youtube.com/embed/IN844mdfJ0M"
+                                    frameborder="0" allowfullscreen></iframe>
+                                </div>
+                                <!-- Open Loop Control -->
+                                <p><b>Open Loop Control</b></p>
+                                <p></p>
+                                <p>For open loop control of the robot, I pre-programmed commands to the robot in order to make it go forward, turn right, 
+                                    go backwards and then turn left. I let this set of commands run for 7 seconds and then I stopped the car. Below is a video
+                                    showing my open loop control.   </p>
+                                <!-- Code for Open Loop Control -->
+                                <script src="https://gist.github.com/bleev3/1625aa0f6d09aae32c1851c00357ea6d.js"></script>
+                                <!-- Video of Open Loop Control -->
+                                <div class="embed-container">
+                                    <iframe width="400" height="400" src="https://www.youtube.com/embed/LChm9tK1AlM"
+                                    frameborder="0" allowfullscreen></iframe>
+                                </div>
+
+                                <p></p>
+                                <h7 class="mt-4"><u>Additional Tasks</u></h7>
+                                <p><b>Frequency of AnalogWrite()</b></p>
+                                <p></p>
+                                <p>From the oscilloscope measurements, I determined that one cycle takes approximately 2.25 sqaures. Each 
+                                    square is 2.50 ms. Therefore, the frequency for analogWrite() is approximately 1/2.5 ms *2.25 = 177.78 Hz. The frequency of analogWrite() is adequately 
+                                    fast for these motors since most boards have a default value of 490 Hz. If we manually configure the frequency,we can get
+                                    a more stable PWM signal which will allow for better voltage control, less noise, and more precise control of the power outputted 
+                                    to the motors.</p>
+                                <script src="https://gist.github.com/bleev3/13a33b6cf0b5aa1d3d2a817afcf3e75e.js"></script>
+                                <img class="img-fluid" src="assets/img/portfolio/fullsize/motorb_oscill.jpg" alt="Motor B Oscilloscope Results" />
+                                <p></p>
+                                <p><b>Lowest PWM Once in Motion</b></p>
+                                <p></p>
+                                <p>I first tried to use a PWM value of 30 to get the robot to overcome friction. However, through 
+                                    experimentation, I found that I was able to find a lower PWM to start and keep the robot in motion 
+                                    which was 10. I was able to get the robot to settle at its slowest speed in about 750 ms.
+                                    When I talked to one of the TAs, they said that the reason the PWM I found was so low
+                                    could be that there is more current being supplied to the robot. </p>
+                                <!-- Code for Lowest PWM Once in Motion -->
+                                <script src="https://gist.github.com/bleev3/5dbe3bca660dad8b1acb5c7d8e2678d4.js"></script>
+                                <!-- Video of Lowest PWM Once in Motion -->
+                                <div class="embed-container">
+                                    <iframe width="400" height="400" src="https://www.youtube.com/embed/Zow4hcZz6uw"
+                                    frameborder="0" allowfullscreen></iframe>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
                 <!-- Modal 3 -->
                 <div class="modal fade" id="portfolioModal3" tabindex="-1" aria-labelledby="portfolioModal3Label" aria-hidden="true">
                     <div class="modal-dialog">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h5 class="modal-title" id="portfolioModal3Label">Time of Flight (Tof) Sensors</h5>
+                                <h5 class="modal-title" id="portfolioModal3Label">Lab 3: Time of Flight (Tof) Sensors</h5>
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
