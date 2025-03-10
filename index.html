@@ -79,6 +79,184 @@
                         </div>
                     </a>
                 </div>
+                               <!-- Modal 1 -->
+                 <!-- This is where I can start to write my report for lab 1 -->
+                 <div class="modal fade" id="portfolioModal1" tabindex="-1" aria-labelledby="portfolioModal1Label" aria-hidden="true">
+                    <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="portfolioModal1Label">Lab 1: Artemis and Bluetooth</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <img class="img-fluid" src="assets/img/portfolio/fullsize/artemis.jpg" alt="..." />
+                                <h6 class="mt-4">Lab 1A: The Artemis Board</h6>
+                                <h7 class="mt-4"><u>Prelab</u></h7>
+                                <p class="mt-3">For part 1A of the lab, I installed the Arduino IDE and the associated libraries 
+                                    needed for the Sparkfun RedBoard Artemis Nano. I also had to update the CH340 driver in order 
+                                    for my laptop to recognize the board.</p>
+                                <h8 class="mt-4"><u>Tasks</u></h8>
+                                <p class="mt-3">I ran the blink example code by going to Examples > 01.Basics > Blink 
+                                    which blinks the onboard LED on and off.</p>
+                                <!-- Blink LED Video -->
+                                <div class="embed-container">
+                                    <iframe width="400" height="400" src="https://www.youtube.com/embed/yFZzJn-5-NY"
+                                    frameborder="0" allowfullscreen></iframe>
+                                </div>
+                                <p class="mt-3">I ran the serial example code by going to 
+                                    Examples > Apollo3 > Example04_Serial which echos back any message 
+                                    sent to the serial monitor.</p>
+                                <!-- Serial Print Video -->
+                                <div class="embed-container">
+                                    <iframe width="450" height="315" src="https://www.youtube.com/embed/ViV22BiOI-w"
+                                    frameborder="0" allowfullscreen></iframe>
+                                </div>
+
+                                <p class="mt-3">I measured the temperature using the analog read example
+                                     by going to Examples > Apollo3 > Example2_analogRead. As I blew on it, 
+                                     the temperature went up slightly.</p>
+                                <!-- Temperature Video -->
+                                <div class="embed-container">
+                                    <iframe width="450" height="315" src="https://www.youtube.com/embed/9BCm2T73VUQ"
+                                    frameborder="0" allowfullscreen></iframe>
+                                </div>
+                                <p class="mt-3">I tested the microphone on the board by running the 
+                                    following example code Example > PDM > Example1_MicrophoneOutput. 
+                                    As I whistled, the frequency increased from around 600 to over 1000.</p>
+                                <!-- Microphone Video -->
+                                <div class="embed-container">
+                                    <iframe width="450" height="315" src="https://www.youtube.com/embed/drJh7VLLExg"
+                                    frameborder="0" allowfullscreen></iframe>
+                                </div>
+                                <p class="mt-3">For the final task, I modified the blink demo code so that when the 
+                                    microphone detected a C note, then the LED would blink. Because of the app that 
+                                    I was using to generate the C note, the frequency for the C note was registering between 1310 
+                                    and 1320.</p>
+                                <!-- C Note code -->
+                                <script src="https://gist.github.com/bleev3/a3130f67e5fbfdd1bd8316943d2bfd02.js"></script>
+                                <!-- C Note Blink Video -->
+                                <div class="embed-container">
+                                    <iframe width="450" height="315" src="https://www.youtube.com/embed/rTipSdipOX4"
+                                    frameborder="0" allowfullscreen></iframe>
+                                </div>
+                                <h9 class="mt-4"> Lab 1B: Bluetooth</h9>
+                                <p></p>
+                                <h10 class="mt-4"><u>Prelab</u></h10>
+                                <p></p>
+                                <p>I needed to set up a virtual environment in Python.</p>
+                                <!-- Python Virtual Environment -->
+                                <img class="img-fluid" src="assets/img/portfolio/fullsize/python_setup.jpg" alt="Python Virtual Environment Setup" />
+                                <p> I also installed the ArduinoBLE library in the Arduino IDE. Then, I got the MAC address
+                                     of the Artemis board by running the ble_arduino code.</p>
+                                <!-- MAC Address -->
+                                <img class="img-fluid" src="assets/img/portfolio/fullsize/mac_address.jpg" alt="Mac Address of Artemis" />
+                                <p></p>
+                                <p></p>
+                                <p>Then, the MAC address and UUID was changed in the connections.yaml file 
+                                    so that I could connect the Artemis to my computer.</p>
+                                <!-- Changes to Python and Arduino Files -->
+                                <img class="img-fluid" src="assets/img/portfolio/fullsize/ble_python.jpg" alt="Python BLE Changes" />
+                                <p></p>
+                                <img class="img-fluid" src="assets/img/portfolio/fullsize/ble_arduino.jpg" alt="Arduino BLE Changes" />
+                                <p>On the Arduino side, the ble_arduino.ino file provides the MAC address for the Artemis board and 
+                                    advertises that this device is available to be connected. We then generate a specific uuid on the 
+                                    python side in order to create a unique identifier for our specific Artemis board. 
+                                    Using python, the computer will scan for available devices and search for my Artemis board that has a 
+                                    unqiue MAC address and UUID pair. Once connected, the Artemis and computer can exchange messages back 
+                                    and forth using Bluetooth. 
+                                    </p>
+                                <h11 class="mt-4"><u>Tasks</u></h11>
+                                <p></p>
+                                <p>(1) I edited the ECHO command on the Arduino side so when it receives a string from the computer, 
+                                    it can send back “Robot says ->” along with the original string. </p>
+                                <!-- Echo: Add photo for arduino code and python -->
+                                <img class="img-fluid" src="assets/img/portfolio/fullsize/echo_arduino.jpg" alt="Arduino Echo Changes" /> 
+                                <img class="img-fluid" src="assets/img/portfolio/fullsize/echo_python.jpg" alt="Python BLE Changes" />
+                                <p>(2) I created a new command called SEND_THREE_FLOATS on the Arduino side which parses the three 
+                                    floats sent by the computer. Then, it prints out the three floats in the serial monitor.  </p>
+                                <!-- Send Three Floats: Add photo for arduino code and python -->
+                                <img class="img-fluid" src="assets/img/portfolio/fullsize/floats_python.jpg" alt="3 Floats Python" />
+                                <img class="img-fluid" src="assets/img/portfolio/fullsize/floats_arduino.jpg" alt="3 Floats Arduino" />
+                                <p>(3) On the Arduino side, for GET_TIME_MILLIS, I used the currentMillis variable to get 
+                                    the current time in milliseconds by calling the millis() function. Then on the python side, 
+                                    the current time was sent back to the computer. </p>
+                                <!-- Get Time Millis: Add photo for arduino code and python -->
+                                <img class="img-fluid" src="assets/img/portfolio/fullsize/ms_arduino.jpg" alt="Arduino MS Changes" /> 
+                                <img class="img-fluid" src="assets/img/portfolio/fullsize/ms_python.jpg" alt="Python MS Changes" />
+                                <p>(4) I created a notification handler that takes the response string from the 
+                                    Artemis and parses the message, so it retrieves just the time. </p>
+                                <!-- Notification Handler: Add photo for arduino code and python -->
+                                <img class="img-fluid" src="assets/img/portfolio/fullsize/notif_handler.jpg" alt="Python Notification Handler" />
+                                 <p>(5) I created a command called GET_DATA which collects and sends data for 10 seconds. 
+                                    The notification handler is used to extract the time from the message. 
+                                    The effective data transfer rate is 242 messages/10 secs = 24.2 messages/sec.
+                                </p>
+                                <!-- Get Data code: Arduino and Python -->
+                                <img class="img-fluid" src="assets/img/portfolio/fullsize/data_arduino.jpg" alt="Arduino Get Data" /> 
+                                 <p>(6) For SEND_TIME_DATA, I first collected the data for 10 seconds into an array of length 700.
+                                     Once either the time reached 10 seconds or the array was filled, then we would send each data 
+                                     in the array to the computer. </p>
+                                <!-- SEND_TIME_DATA code: Arduino and Python -->
+                                <img class="img-fluid" src="assets/img/portfolio/fullsize/senddata_arduino.jpg" alt="Arduino Send Data" /> 
+                                <img class="img-fluid" src="assets/img/portfolio/fullsize/senddata_python.jpg" alt="Python Send Data" />
+                                <p>(7) For GET_TEMP_READINGS, I used the same structure of collecting the time and temperature for 10 seconds
+                                     into arrays of length 700. Then, I would send out the data once the arrays had been filled or we reached 10 seconds.
+                                    I also created a notification handler on the python side which would separate the time and temperature 
+                                    and put it into time and temp arrays respectively.
+                                </p>
+                                <!-- Notif Handler and Results on Python Side -->
+                                <img class="img-fluid" src="assets/img/portfolio/fullsize/temp_arduino.jpg" alt="Arduino Get Temp" /> 
+                                <img class="img-fluid" src="assets/img/portfolio/fullsize/temp_python.jpg" alt="Python Get Temp" />
+                                <img class="img-fluid" src="assets/img/portfolio/fullsize/time_data.jpg" alt="Time Data" /> 
+                                <img class="img-fluid" src="assets/img/portfolio/fullsize/temp_data.jpg" alt="Temp Data" />
+                                <p></p>
+                                 <p>(8) The first method where you send live data allows you to get the data almost instantaneously since you 
+                                    send the data right after you have received the measurement.  This method can be useful when you want to make 
+                                    quick decisions based on real time data. 
+                                    The second method where you send data after it has been collected in an array allows you to record the data at 
+                                    a much faster rate since there are no interrupts from the computer or the BLE service. The second method is useful 
+                                    when you want to send data after you have completed a trial or a test. 
+                                    I am sending floats to represent the time and the temperature. Each float is 4 bytes. In turn, if we have 
+                                    384kB of RAM, we can store 384kB/8 bytes which is 48,000 data points. 
+                                </p>
+                                <h9 class="mt-4"><u>Additional Tasks</u></h9>
+                                <p></p>
+                                <h10 class="mt-4"><u>Effective Data Rate and Overhead</u></h10>
+                                <p>I tested the data rate by first sending a string called “Hello”. 
+                                    Then, I created a function similar to ECHO called ECHO_BYTES_BACK. Then I created a loop that increments the 
+                                    message being sent by 5 bytes each time. 
+                                    I would calculate the difference between when the message was sent and when the response message was received. 
+                                    In a separate loop, I calculated the byte length and data rate and then generated a graph shown below.
+                                </p>
+                                <!-- Code for Data Rate and Overhead -->
+                                <img class="img-fluid" src="assets/img/portfolio/fullsize/datarate_python.jpg" alt="Python Data Rate and Overhead" /> 
+                                <img class="img-fluid" src="assets/img/portfolio/fullsize/datarate_graph.jpg" alt="Data Rate Graph" />
+                                <p>
+                                    The data rate for 5-byte replies is around 20 bytes/second while 120-byte replies is about 500 bytes/second. 
+                                    Short replies introduce a lot of overhead because you need to send multiple packets 
+                                    to transmit a large amount of data. Each message contains a certain amount of overhead. As a result, since you 
+                                    need to send more packets, there will be a greater total amount of overhead as compared to larger packets.
+                                    Larger replies help to reduce overhead because you can use fewer packets to send over a large amount of data. 
+                                    Because each message contains a large amount of data, the overhead is small as compared to the size of the actual 
+                                    data you want to send. </p>
+                                <h11 class="mt-4"><u>Reliability</u></h11>
+                                <p>When you send data at a higher rate from the robot to the computer, the computer is 
+                                    able to read all of the data published. I tested this by sending over an array that 
+                                    had 1000 entries containing the time in milliseconds from the Artemis to the computer 
+                                    and the computer was able to receive all 1000 entries. The caveat is that since the 
+                                    data points were floats, there may have been a smaller overhead resulting in less data 
+                                    being transmitted overall.</p>
+                                <h12 class="mt-4"><u>Discussion</u></h12>
+                                <p>I learned about the onboard Artemis board sensors and how Bluetooth can be used to transmit 
+                                    data between Artemis and the computer. It was also interesting to see how the data rate could 
+                                    increase or decrease depending on whether there were print statements in both the Arduino and Python code.</p>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <!-- Portfolio Item 2 -->
                 <div class="col-lg-4 col-sm-6">
                     <a class="portfolio-box" href="#" data-bs-toggle="modal" data-bs-target="#portfolioModal2">
@@ -474,6 +652,7 @@
                         </div>
                     </div>
                 </div>
+                
                 <!-- Modal 2 -->
                 <div class="modal fade" id="portfolioModal2" tabindex="-1" aria-labelledby="portfolioModal2Label" aria-hidden="true">
                     <div class="modal-dialog modal-lg">
@@ -644,185 +823,9 @@
                                     <iframe width="400" height="400" src="https://www.youtube.com/embed/TFBwtbklaPM"
                                     frameborder="0" allowfullscreen></iframe>
                                 </div>
-                <!-- Modal 1 -->
-                 <!-- This is where I can start to write my report for lab 1 -->
-                 <div class="modal fade" id="portfolioModal1" tabindex="-1" aria-labelledby="portfolioModal1Label" aria-hidden="true">
-                    <div class="modal-dialog modal-lg">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="portfolioModal1Label">Lab 1: Artemis and Bluetooth</h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                            </div>
-                            <div class="modal-body">
-                                <img class="img-fluid" src="assets/img/portfolio/fullsize/artemis.jpg" alt="..." />
-                                <h6 class="mt-4">Lab 1A: The Artemis Board</h6>
-                                <h7 class="mt-4"><u>Prelab</u></h7>
-                                <p class="mt-3">For part 1A of the lab, I installed the Arduino IDE and the associated libraries 
-                                    needed for the Sparkfun RedBoard Artemis Nano. I also had to update the CH340 driver in order 
-                                    for my laptop to recognize the board.</p>
-                                <h8 class="mt-4"><u>Tasks</u></h8>
-                                <p class="mt-3">I ran the blink example code by going to Examples > 01.Basics > Blink 
-                                    which blinks the onboard LED on and off.</p>
-                                <!-- Blink LED Video -->
-                                <div class="embed-container">
-                                    <iframe width="400" height="400" src="https://www.youtube.com/embed/yFZzJn-5-NY"
-                                    frameborder="0" allowfullscreen></iframe>
-                                </div>
-                                <p class="mt-3">I ran the serial example code by going to 
-                                    Examples > Apollo3 > Example04_Serial which echos back any message 
-                                    sent to the serial monitor.</p>
-                                <!-- Serial Print Video -->
-                                <div class="embed-container">
-                                    <iframe width="450" height="315" src="https://www.youtube.com/embed/ViV22BiOI-w"
-                                    frameborder="0" allowfullscreen></iframe>
-                                </div>
-
-                                <p class="mt-3">I measured the temperature using the analog read example
-                                     by going to Examples > Apollo3 > Example2_analogRead. As I blew on it, 
-                                     the temperature went up slightly.</p>
-                                <!-- Temperature Video -->
-                                <div class="embed-container">
-                                    <iframe width="450" height="315" src="https://www.youtube.com/embed/9BCm2T73VUQ"
-                                    frameborder="0" allowfullscreen></iframe>
-                                </div>
-                                <p class="mt-3">I tested the microphone on the board by running the 
-                                    following example code Example > PDM > Example1_MicrophoneOutput. 
-                                    As I whistled, the frequency increased from around 600 to over 1000.</p>
-                                <!-- Microphone Video -->
-                                <div class="embed-container">
-                                    <iframe width="450" height="315" src="https://www.youtube.com/embed/drJh7VLLExg"
-                                    frameborder="0" allowfullscreen></iframe>
-                                </div>
-                                <p class="mt-3">For the final task, I modified the blink demo code so that when the 
-                                    microphone detected a C note, then the LED would blink. Because of the app that 
-                                    I was using to generate the C note, the frequency for the C note was registering between 1310 
-                                    and 1320.</p>
-                                <!-- C Note code -->
-                                <script src="https://gist.github.com/bleev3/a3130f67e5fbfdd1bd8316943d2bfd02.js"></script>
-                                <!-- C Note Blink Video -->
-                                <div class="embed-container">
-                                    <iframe width="450" height="315" src="https://www.youtube.com/embed/rTipSdipOX4"
-                                    frameborder="0" allowfullscreen></iframe>
-                                </div>
-                                <h9 class="mt-4"> Lab 1B: Bluetooth</h9>
-                                <p></p>
-                                <h10 class="mt-4"><u>Prelab</u></h10>
-                                <p></p>
-                                <p>I needed to set up a virtual environment in Python.</p>
-                                <!-- Python Virtual Environment -->
-                                <img class="img-fluid" src="assets/img/portfolio/fullsize/python_setup.jpg" alt="Python Virtual Environment Setup" />
-                                <p> I also installed the ArduinoBLE library in the Arduino IDE. Then, I got the MAC address
-                                     of the Artemis board by running the ble_arduino code.</p>
-                                <!-- MAC Address -->
-                                <img class="img-fluid" src="assets/img/portfolio/fullsize/mac_address.jpg" alt="Mac Address of Artemis" />
-                                <p></p>
-                                <p></p>
-                                <p>Then, the MAC address and UUID was changed in the connections.yaml file 
-                                    so that I could connect the Artemis to my computer.</p>
-                                <!-- Changes to Python and Arduino Files -->
-                                <img class="img-fluid" src="assets/img/portfolio/fullsize/ble_python.jpg" alt="Python BLE Changes" />
-                                <p></p>
-                                <img class="img-fluid" src="assets/img/portfolio/fullsize/ble_arduino.jpg" alt="Arduino BLE Changes" />
-                                <p>On the Arduino side, the ble_arduino.ino file provides the MAC address for the Artemis board and 
-                                    advertises that this device is available to be connected. We then generate a specific uuid on the 
-                                    python side in order to create a unique identifier for our specific Artemis board. 
-                                    Using python, the computer will scan for available devices and search for my Artemis board that has a 
-                                    unqiue MAC address and UUID pair. Once connected, the Artemis and computer can exchange messages back 
-                                    and forth using Bluetooth. 
-                                    </p>
-                                <h11 class="mt-4"><u>Tasks</u></h11>
-                                <p></p>
-                                <p>(1) I edited the ECHO command on the Arduino side so when it receives a string from the computer, 
-                                    it can send back “Robot says ->” along with the original string. </p>
-                                <!-- Echo: Add photo for arduino code and python -->
-                                <img class="img-fluid" src="assets/img/portfolio/fullsize/echo_arduino.jpg" alt="Arduino Echo Changes" /> 
-                                <img class="img-fluid" src="assets/img/portfolio/fullsize/echo_python.jpg" alt="Python BLE Changes" />
-                                <p>(2) I created a new command called SEND_THREE_FLOATS on the Arduino side which parses the three 
-                                    floats sent by the computer. Then, it prints out the three floats in the serial monitor.  </p>
-                                <!-- Send Three Floats: Add photo for arduino code and python -->
-                                <img class="img-fluid" src="assets/img/portfolio/fullsize/floats_python.jpg" alt="3 Floats Python" />
-                                <img class="img-fluid" src="assets/img/portfolio/fullsize/floats_arduino.jpg" alt="3 Floats Arduino" />
-                                <p>(3) On the Arduino side, for GET_TIME_MILLIS, I used the currentMillis variable to get 
-                                    the current time in milliseconds by calling the millis() function. Then on the python side, 
-                                    the current time was sent back to the computer. </p>
-                                <!-- Get Time Millis: Add photo for arduino code and python -->
-                                <img class="img-fluid" src="assets/img/portfolio/fullsize/ms_arduino.jpg" alt="Arduino MS Changes" /> 
-                                <img class="img-fluid" src="assets/img/portfolio/fullsize/ms_python.jpg" alt="Python MS Changes" />
-                                <p>(4) I created a notification handler that takes the response string from the 
-                                    Artemis and parses the message, so it retrieves just the time. </p>
-                                <!-- Notification Handler: Add photo for arduino code and python -->
-                                <img class="img-fluid" src="assets/img/portfolio/fullsize/notif_handler.jpg" alt="Python Notification Handler" />
-                                 <p>(5) I created a command called GET_DATA which collects and sends data for 10 seconds. 
-                                    The notification handler is used to extract the time from the message. 
-                                    The effective data transfer rate is 242 messages/10 secs = 24.2 messages/sec.
-                                </p>
-                                <!-- Get Data code: Arduino and Python -->
-                                <img class="img-fluid" src="assets/img/portfolio/fullsize/data_arduino.jpg" alt="Arduino Get Data" /> 
-                                 <p>(6) For SEND_TIME_DATA, I first collected the data for 10 seconds into an array of length 700.
-                                     Once either the time reached 10 seconds or the array was filled, then we would send each data 
-                                     in the array to the computer. </p>
-                                <!-- SEND_TIME_DATA code: Arduino and Python -->
-                                <img class="img-fluid" src="assets/img/portfolio/fullsize/senddata_arduino.jpg" alt="Arduino Send Data" /> 
-                                <img class="img-fluid" src="assets/img/portfolio/fullsize/senddata_python.jpg" alt="Python Send Data" />
-                                <p>(7) For GET_TEMP_READINGS, I used the same structure of collecting the time and temperature for 10 seconds
-                                     into arrays of length 700. Then, I would send out the data once the arrays had been filled or we reached 10 seconds.
-                                    I also created a notification handler on the python side which would separate the time and temperature 
-                                    and put it into time and temp arrays respectively.
-                                </p>
-                                <!-- Notif Handler and Results on Python Side -->
-                                <img class="img-fluid" src="assets/img/portfolio/fullsize/temp_arduino.jpg" alt="Arduino Get Temp" /> 
-                                <img class="img-fluid" src="assets/img/portfolio/fullsize/temp_python.jpg" alt="Python Get Temp" />
-                                <img class="img-fluid" src="assets/img/portfolio/fullsize/time_data.jpg" alt="Time Data" /> 
-                                <img class="img-fluid" src="assets/img/portfolio/fullsize/temp_data.jpg" alt="Temp Data" />
-                                <p></p>
-                                 <p>(8) The first method where you send live data allows you to get the data almost instantaneously since you 
-                                    send the data right after you have received the measurement.  This method can be useful when you want to make 
-                                    quick decisions based on real time data. 
-                                    The second method where you send data after it has been collected in an array allows you to record the data at 
-                                    a much faster rate since there are no interrupts from the computer or the BLE service. The second method is useful 
-                                    when you want to send data after you have completed a trial or a test. 
-                                    I am sending floats to represent the time and the temperature. Each float is 4 bytes. In turn, if we have 
-                                    384kB of RAM, we can store 384kB/8 bytes which is 48,000 data points. 
-                                </p>
-                                <h9 class="mt-4"><u>Additional Tasks</u></h9>
-                                <p></p>
-                                <h10 class="mt-4"><u>Effective Data Rate and Overhead</u></h10>
-                                <p>I tested the data rate by first sending a string called “Hello”. 
-                                    Then, I created a function similar to ECHO called ECHO_BYTES_BACK. Then I created a loop that increments the 
-                                    message being sent by 5 bytes each time. 
-                                    I would calculate the difference between when the message was sent and when the response message was received. 
-                                    In a separate loop, I calculated the byte length and data rate and then generated a graph shown below.
-                                </p>
-                                <!-- Code for Data Rate and Overhead -->
-                                <img class="img-fluid" src="assets/img/portfolio/fullsize/datarate_python.jpg" alt="Python Data Rate and Overhead" /> 
-                                <img class="img-fluid" src="assets/img/portfolio/fullsize/datarate_graph.jpg" alt="Data Rate Graph" />
-                                <p>
-                                    The data rate for 5-byte replies is around 20 bytes/second while 120-byte replies is about 500 bytes/second. 
-                                    Short replies introduce a lot of overhead because you need to send multiple packets 
-                                    to transmit a large amount of data. Each message contains a certain amount of overhead. As a result, since you 
-                                    need to send more packets, there will be a greater total amount of overhead as compared to larger packets.
-                                    Larger replies help to reduce overhead because you can use fewer packets to send over a large amount of data. 
-                                    Because each message contains a large amount of data, the overhead is small as compared to the size of the actual 
-                                    data you want to send. </p>
-                                <h11 class="mt-4"><u>Reliability</u></h11>
-                                <p>When you send data at a higher rate from the robot to the computer, the computer is 
-                                    able to read all of the data published. I tested this by sending over an array that 
-                                    had 1000 entries containing the time in milliseconds from the Artemis to the computer 
-                                    and the computer was able to receive all 1000 entries. The caveat is that since the 
-                                    data points were floats, there may have been a smaller overhead resulting in less data 
-                                    being transmitted overall.</p>
-                                <h12 class="mt-4"><u>Discussion</u></h12>
-                                <p>I learned about the onboard Artemis board sensors and how Bluetooth can be used to transmit 
-                                    data between Artemis and the computer. It was also interesting to see how the data rate could 
-                                    increase or decrease depending on whether there were print statements in both the Arduino and Python code.</p>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                            </div>
-                        </div>
-                    </div>
+ 
                 </div>
-
+                
 
 
 
