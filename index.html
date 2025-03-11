@@ -288,9 +288,246 @@
                         </div>
                     </a>
                 </div>
-
+                <!-- Portfolio Item 5 -->
+                <div class="col-lg-4 col-sm-6">
+                    <a class="portfolio-box" href="#" data-bs-toggle="modal" data-bs-target="#portfolioModal5">
+                        <img class="img-fluid" src="assets/img/portfolio/thumbnails/linear_pi_ctrl.jpg" alt="..." />
+                        <div class="portfolio-box-caption">
+                            <div class="project-category text-white-50">Lab 5</div>
+                            <div class="project-name">Linear PID control and Linear Interpolation</div>
+                        </div>
+                    </a>
+                </div>
 
                 <!-- All Modals/Content for Labs Go Here -->
+                <!-- Modal 5 -->
+                <div class="modal fade" id="portfolioModal5" tabindex="-1" aria-labelledby="portfolioModal5Label" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="portfolioModal5Label">Lab 5: Linear PID control and Linear Interpolation</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <img class="img-fluid" src="assets/img/portfolio/fullsize/pid_eqn.jpg" alt="PI Controller" />
+                                <p>In this lab, the objective was to explore linear PID control, predict the output of the PID controller
+                                    using extrapolation when there is no new data from the ToF sensor, and how to mitigate the effects of integral
+                                    windup and .
+                                </p>
+                                <h7 class="mt-4"><u>Prelab</u></h7>
+                                <p></p>
+                                <h7 class="mt-4"><b>Debugging and Sending/Receiving Data Over Bluetooth</b></h7>
+                                <p></p>
+                                <p> On the Python side, I send the proportional gain Kp, integral gain Ki, and the target distance to the 
+                                    Arduino side to start the robot. Once the command has been sent, the PID controller will execute
+                                    for 30 seconds. Data for the time, distance recorded by the ToF sensor, the error between the measured and target distance,
+                                    the individual Kp and Ki terms, and PWM signal from the PID controller are saved into arrays.
+                                    Once the PID loop finishes executing, another command sends the data to Python where I can graph and analyze the Kp and Ki terms
+                                    to see which term is dominating when calculating the PWM signal and tweak the gains appropriately.
+                                    Below I provide the Arduino code and Python command.
+                                </p>
+                                <!-- Arduino Code -->
+                                <script src="https://gist.github.com/bleev3/02b62d72c00d8e475c59ea64e9c6f5ba.js"></script>
+                                <script src="https://gist.github.com/bleev3/e7094dd10d7bb3f8b21d4f7db23e67a5.js"></script>
+                                <!-- Python Command -->
+                                <script src="https://gist.github.com/bleev3/643a5ddd84b8d6ceabab9c8c9918103e.js"></script>
+                                <script src="https://gist.github.com/bleev3/b487a1195bcf3dd73dbac0eedb68d7ba.js"></script>
+
+                                <p></p>
+                                <p>A separate command can be sent from Python to stop the robot if it's about to crash into the wall. I also added a hard stopp in the void loop()
+                                    where I set the PWM signal to 0 for the motors if Bluetooth disconnects.
+                                    Below shows the Arduio code for both hard stops (command and in the void loop() function)
+                                    and the Python command respectively.
+                                </p>
+                                <!-- Arduino -->
+                                <script src="https://gist.github.com/bleev3/d7a832ec6e472f4d33cfdb00d1e3e972.js"></script>
+                                <script src="https://gist.github.com/bleev3/27419e8bad2d17e5e615de8295f03092.js"></script>
+                                <!-- Python -->
+                                <script src="https://gist.github.com/bleev3/bd4b357806ebad59841a3ee83e5ba4d2.js"></script>
+                                <h7 class="mt-4"><u>Tasks</u></h7>
+                                <p><b>Proportional Control</b></p>
+                                <p></p>
+                                <!-- Proportional Control -->
+                                <p> I first started with getting the proportional control to work so that the robot stops at a setpoint of 304 mm (1 ft). For my ToF sensor, I decided to set the range to be long range since we need to have our
+                                    PID controller work for various distances from 2m up to 4m. For the proportional control,
+                                    the sampling frequency for the ToF sensor is around 12 ms which is relatively slow compared to the PID control
+                                    loop which is approximately 30 ms. As a result, the ToF sensor is not producing new distance readings fast
+                                    enough for the PID controller to use to calculate the new PWM signal to send to the motors. 
+                                    This issue will be explored in greater detail in the extrapolation section. 
+                                </p>
+                                <p> The P controller multiplies the error between the measured distance and the setpoint and the Kp value
+                                    in order to generate the PWM signal that will be sent to the motors to move the robot closer to the setpoint.
+                                    Since the maximum value that my ToF sensor can read 
+                                    is approximately 4m and the motor input values before stalling is within the range of 20-200, I estimated the starting
+                                    Kp value to be approximately:
+                                </p>
+                                <img class="img-fluid" src="assets/img/portfolio/fullsize/prop_term.jpg" alt="" />
+                                <p>However, through experimentation, I discovered that a Kp value of 0.0541 was too high since 
+                                    it would cause the robot to coast as it reached the setup because the motors initially started
+                                    at a high PWM value. By cranking down the Kp value, I was able to start the motors at a lower maximum 
+                                    PWM signal and the robot would settle at the setpoint of 304 mm. The final Kp value I found that worked was
+                                    0.034. The maximum speed is 0.11979 m/s. 
+                                    Below are three videos showing my P controller working and graphs showing the distance, error, and PWM signal
+                                    when running the P controller.
+                                </p>
+                                <p></p>
+                                <!-- Video of Robot when using P controller -->
+                                <p></p>
+                                <div class="embed-container">
+                                    <iframe width="400" height="400" src="https://www.youtube.com/embed/GYzTBSKY8Mg"
+                                    frameborder="0" allowfullscreen></iframe>
+                                </div>
+                                <div class="embed-container">
+                                    <iframe width="400" height="400" src="https://www.youtube.com/embed/n9aTGyGqWe0"
+                                    frameborder="0" allowfullscreen></iframe>
+                                </div>
+                                <div class="embed-container">
+                                    <iframe width="400" height="400" src="https://www.youtube.com/embed/YfnVT3OdX-0"
+                                    frameborder="0" allowfullscreen></iframe>
+                                </div>
+                                <!-- Distance vs Time -->
+                                <img class="img-fluid" src="assets/img/portfolio/fullsize/linear_p_distance.jpg" alt="" />
+                                <!-- Error vs Time -->
+                                <img class="img-fluid" src="assets/img/portfolio/fullsize/linear_p_error.jpg" alt="" />
+                                <!-- PWM vs Time -->
+                                <img class="img-fluid" src="assets/img/portfolio/fullsize/linear_p_pwm.jpg" alt="" />
+                                <!-- Code for P Controller -->
+                                <script src="https://gist.github.com/bleev3/59267b9a66ba531005f33431897eb60e.js"></script>
+                                <p></p>
+                                <p><b>Adding the Integral Term</b></p>
+                                <p></p>
+                                <p>After I knew that the proportional controller was working, I added the integral term.
+                                    The proportional term gets you as close to the setpoint as quick as possible but the system is unstable.
+                                    Furthermore, if the Kp value is too high or too low, you will either overshoot or undershoot the setpoint.
+                                    The integral term is added so that you can correct the overshoot or undershoot so you get as 
+                                    close as possible to the setpoint and stabilize the system.
+                                    For the integral term, you add up the error based on the difference in time and then you multiply
+                                    that by the integral gain Ki.
+                                    I added a very small Ki term since as can be shown in the Ki term graph shown below, the error accumulates
+                                    and if it accumulates too much, then the PWM signal will become too large and lead to overshoot.
+                                    As a result, I had to clamp my PWM signal to be between 20 and 200. 
+                                    The final Kp and Ki terms that I got that made the system work was Kp = 0.048 and Ki =  0.00001.
+                                    The maximum linear speed is 0.6932 m/s.
+                                    Below is a video showing my PI controller working and the following graphs shwoing my results: distance, error, Kp term,
+                                    Ki term, and PWM.
+                                </p>
+                                <!-- Video of Robot when using PI controller -->
+                                <p></p>
+                                <div class="embed-container">
+                                    <iframe width="400" height="400" src="https://www.youtube.com/embed/krIUZ7EbHAc"
+                                    frameborder="0" allowfullscreen></iframe>
+                                </div>
+                                <!-- Distance vs Time -->
+                                <img class="img-fluid" src="assets/img/portfolio/fullsize/linear_pi_distance.jpg" alt="" />
+                                <!-- Error vs Time -->
+                                <img class="img-fluid" src="assets/img/portfolio/fullsize/linear_pi_error.jpg" alt="" />
+                                <!-- Kp Term vs Time -->
+                                <img class="img-fluid" src="assets/img/portfolio/fullsize/linear_pi_kp.jpg" alt="" />
+                                <!-- Ki Term vs Time -->
+                                <img class="img-fluid" src="assets/img/portfolio/fullsize/linear_pi_ki.jpg" alt="" />
+                                <!-- PWM vs Time -->
+                                <img class="img-fluid" src="assets/img/portfolio/fullsize/linear_pi_pwm.jpg" alt="" />
+                                <!-- Code for PI Controller -->
+                                <script src="https://gist.github.com/bleev3/7bae406bd517085a6226ca20442f7dec.js"></script>
+                                
+                                <p><b>Additional Task: Integral Windup</b></p>
+                                <p></p>
+                                <p>As shown in the previous section, the integral term can increase until it oversaturates the PWM signal
+                                    and as a result, it takes a long term for the integral term to decrease the PWM signal and get the 
+                                    robot to reach the setpoint. This is called integral windup. In order to mitigate this effect, I protect the system from integral windup
+                                    by checking the sign of the unclamped output of the PID controller and the error as well as whether
+                                    the unclamped output of the PID controller is equal to the clamped output of the PID controller.
+                                    If the signs of the error term and the PID controller are the same adn the unclapmed and clamped PID controller outputs
+                                    are not the same value, then we zero out the integral term so that we can decrease the PWM signal faster.
+                                    As a result, we can get to the setpoint faster than if we did not implement integral windup protection.
+                                    Below is my implementation of integral windup protection and a video showing that it works for the robot. 
+                                </p>
+                                <!-- Code for Integral Windup Protection -->
+                                <script src="https://gist.github.com/bleev3/e8dcf1a9d00f8a4dae5bd5a607ca99af.js"></script>
+                                <script src="https://gist.github.com/bleev3/93d43a564f199dad0198f3ffa34d7fc4.js"></script>
+                                <!-- Video of Integral Windup Protection -->
+                                <div class="embed-container">
+                                    <iframe width="400" height="400" src="https://www.youtube.com/embed/DUnuDsNbBTE"
+                                    frameborder="0" allowfullscreen></iframe>
+                                </div>
+                                <p><b>Extrapolation</b></p>
+                                <p></p>
+                                <p><b>ToF and PID Loop Rate</b></p>
+                                <p>My ToF returns new data at a frequency of about 83 Hz or 12 ms. The PID loop runs at a frequency of 
+                                    about 33 Hz or 30 ms. As discussed before, this means that the ToF sensors are producing new measurements
+                                    at a much slower rate as compared to the time it takes for the PID controlle loop to execute. 
+                                    Therefore, we should implement extrapolation where we can use previous valid measurements in order
+                                    to predict the new distance measurement and calculate a new PWM signal based on the predicted distance measurement.
+                                    Below is data from the serial monitor showing the rate of the ToF sensor reading and the PID loop execution.
+                                </p>
+                                <!-- ToF time -->
+                                <img class="img-fluid" src="assets/img/portfolio/fullsize/linear_tof_freq.jpg" alt="" />
+                                <!-- PID Loop Time -->
+                                <img class="img-fluid" src="assets/img/portfolio/fullsize/linear_pid_loop_freq.jpg" alt="" />
+                                <p><b>Extrapolation Using One Previous Data Point</b></p>
+                                <p> The first thing I implemented in order to resolve this issue of the different rates that the ToF sensor is sending new data and
+                                    the time it takes for the PID loop to execute was to use the previous valid measurement from the ToF sensor in order to get a new PWM value.
+                                    If there is new data available from the ToF sensors, we use that distance measurement in order 
+                                    to calculate the PWM signal to send to the motors. If there is no new data, we use the previous valid measurement to find the updated PWM value.
+                                    Below is my code implementation, graphs of distance, error, Kp, Ki, PWM, and extrapolated data over time, and a video of it working on the robot.
+                                    The Kp value was 0.04. The Ki value was 0.000001.
+                                </p>
+                                <!-- Code -->
+                                <script src="https://gist.github.com/bleev3/964353eb2074da970495df3c9bc3654d.js"></script>
+                                <!-- Distance vs Time -->
+                                <img class="img-fluid" src="assets/img/portfolio/fullsize/linear_extrap1_distance.jpg" alt="" />
+                                <!-- Error vs Time -->
+                                <img class="img-fluid" src="assets/img/portfolio/fullsize/linear_extrap1_error.jpg" alt="" />
+                                <!-- Kp Term vs Time -->
+                                <img class="img-fluid" src="assets/img/portfolio/fullsize/linear_extrap1_kp.jpg" alt="" />
+                                <!-- Ki Term vs Time -->
+                                <img class="img-fluid" src="assets/img/portfolio/fullsize/linear_extrap1_ki.jpg" alt="" />
+                                <!-- PWM vs Time -->
+                                <img class="img-fluid" src="assets/img/portfolio/fullsize/linear_extrap1_pwm.jpg" alt="" />
+                                <!-- Extrapolated Data vs Time -->
+                                <img class="img-fluid" src="assets/img/portfolio/fullsize/linear_extrap1_data.jpg" alt="" />
+                                <!-- Video of Extrapolation 1 -->
+                                <div class="embed-container">
+                                    <iframe width="400" height="400" src="https://www.youtube.com/embed/KcbG5DGAO58"
+                                    frameborder="0" allowfullscreen></iframe>
+                                </div>
+
+                                <p><b>Extrapolation Using Two Previous Data Point</b></p>
+                                <p>The second thing I implemented in order to resolve this issue of the different rates that the ToF sensor is sending new data and
+                                    the time it takes for the PID loop to execute was to use the previous two valid measurements from the ToF sensor in order to get a new PWM value.
+                                    The new PWM value found using the 2 previous valid measurements is calculated by using a linear interpolation equation which will be shown below.
+
+                                </p>
+                                <!-- Linear Interpolation -->
+                                <img class="img-fluid" src="assets/img/portfolio/fullsize/linear_interp.jpg" alt="" />
+                                <p>If there is new data available from the ToF sensors, we use that distance measurement in order 
+                                    to calculate the PWM signal to send to the motors. If there is no new data, we use the previous 2 valid measurements to find the updated PWM value.
+                                    Below is my code implementation, graphs of distance, error, Kp, Ki, PWM, and extrapolated data over time, and a video of it working on the robot.
+                                    The Kp value was 0.047. The Ki value was 0.000001.
+                                </p>
+                                <!-- Code -->
+                                <script src="https://gist.github.com/bleev3/6e68652473a7a1f468d6145c3cb56ac1.js"></script>
+                                <!-- Distance vs Time -->
+                                <img class="img-fluid" src="assets/img/portfolio/fullsize/linear_extrap2_distance.jpg" alt="" />
+                                <!-- Error vs Time -->
+                                <img class="img-fluid" src="assets/img/portfolio/fullsize/linear_extrap2_error.jpg" alt="" />
+                                <!-- Kp Term vs Time -->
+                                <img class="img-fluid" src="assets/img/portfolio/fullsize/linear_extrap2_kp.jpg" alt="" />
+                                <!-- Ki Term vs Time -->
+                                <img class="img-fluid" src="assets/img/portfolio/fullsize/linear_extrap2_ki.jpg" alt="" />
+                                <!-- PWM vs Time -->
+                                <img class="img-fluid" src="assets/img/portfolio/fullsize/linear_extrap2_pwm.jpg" alt="" />
+                                <!-- Extrapolated Data vs Time -->
+                                <img class="img-fluid" src="assets/img/portfolio/fullsize/linear_extrap2_data.jpg" alt="" />
+                                <!-- Video of Extrapolation 2 -->
+                                <div class="embed-container">
+                                    <iframe width="400" height="400" src="https://www.youtube.com/embed/SDDU4NR9VsA"
+                                    frameborder="0" allowfullscreen></iframe>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 
                 <!-- Modal 4 -->
                 <div class="modal fade" id="portfolioModal4" tabindex="-1" aria-labelledby="portfolioModal4Label" aria-hidden="true">
