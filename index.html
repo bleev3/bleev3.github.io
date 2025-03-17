@@ -298,8 +298,233 @@
                         </div>
                     </a>
                 </div>
+                <!-- Portfolio Item 6 -->
+                <div class="col-lg-4 col-sm-6">
+                    <a class="portfolio-box" href="#" data-bs-toggle="modal" data-bs-target="#portfolioModal6">
+                        <img class="img-fluid" src="assets/img/portfolio/thumbnails/orient_pid.jpg" alt="..." />
+                        <div class="portfolio-box-caption">
+                            <div class="project-category text-white-50">Lab 6</div>
+                            <div class="project-name">Orientation PID Control</div>
+                        </div>
+                    </a>
+                </div>
 
                 <!-- All Modals/Content for Labs Go Here -->
+                <!-- Modal 6 -->
+                <div class="modal fade" id="portfolioModal6" tabindex="-1" aria-labelledby="portfolioModal6Label" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="portfolioModal6Label">Lab 6: Orientation PID Control</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <img class="img-fluid" src="assets/img/portfolio/fullsize/pid_eqn.jpg" alt="PI Controller" />
+                                <p>In this lab, the objective was to expand our PID controller from last lab and use it to
+                                    control the orientation of the robot.
+                                </p>
+                                <h7 class="mt-4"><u>Prelab</u></h7>
+                                <p></p>
+                                <h7 class="mt-4"><b>Debugging and Sending/Receiving Data Over Bluetooth</b></h7>
+                                <p></p>
+                                <p> On the Python side, I send the proportional gain Kp, integral gain Ki, and the target angle to the 
+                                    Arduino side to start the robot. Once the command has been sent, the PID controller will execute
+                                    for 90 seconds. Data for the time, angle recorded by the digital motion processor (DMP) , the error between the measured and target angle,
+                                    the individual Kp and Ki terms, and PWM signal from the PID controller are saved into arrays.
+                                    Once the PID loop finishes executing, another command sends the data to Python where I can graph and analyze the Kp and Ki terms
+                                    to see which term is dominating when calculating the PWM signal and tweak the gains appropriately.
+                                    Below I provide the Arduino code and Python command.
+                                </p>
+                                <!-- Arduino Code -->
+                                <script src="https://gist.github.com/bleev3/02296f4e4553c97d5cfbfbc0adf821c4.js"></script>
+                                <script src="https://gist.github.com/bleev3/4769098743a53b5c9b8575db51d3bb45.js"></script>
+                                <!-- Python Command -->
+                                <script src="https://gist.github.com/bleev3/5f26afb9e29285ab0c50c47d7214fdc3.js"></script>
+                                <script src="https://gist.github.com/bleev3/b1549a743739f249ab411304e2a598f9.js"></script>
+
+                                <h7 class="mt-4"><u>Tasks</u></h7>
+                                <p><b>IMU vs DMP</b></p>
+                                <p></p>
+                                <p>When I was collecting data from the IMU, I discovered that there was significant drift
+                                    due to small inaccuracies in each angle measurement that I was reading from the IMU. Over time, as
+                                    the error accumulated, this resulted in the recorded angle being much higher than the actual angle.
+                                    Because you cannot directly calculate yaw for the accelerometer, there is no correction factor to minimzie the drift.
+                                    You would have to determine the bias of the gyroscope and subtract that out from the gyroscope readings to minimize the drift.
+                                    As a result, I decided to use the DMP since that uses measurements from the gyroscope, accelerometer, 
+                                    and magnetometer in order to correct the drift.</p>
+                                <p></p>
+                                <p>On average, the DMP is more accurate when measuring the yaw than the IMU due to the multiple readings that it takes
+                                    from the gyroscope, magnetometer, and accelerometer in order to get the yaw. However, the DMP is still susceptible to 
+                                    noise. As shown in the graph below, when the motors are turned on at a PWM of 90, the angle measurement is
+                                    approximately -5.5 degrees. When the motors are turned off, the DMP measures an angle of approximately -6.5 degrees.
+                                    The difference is 1 degree which is negligible. 
+                                </p>
+                                <img class="img-fluid" src="assets/img/portfolio/fullsize/dmp_measurements.jpg" alt="DMP Measurements" />
+                                <img class="img-fluid" src="assets/img/portfolio/fullsize/dmp_difference.jpg" alt="DMP Measurements" />
+                                <p></p>
+                                <p><b></b></p>
+                                <p><b>DMP and PID Loop Frequency</b></p>
+                                <p></p>
+                                <p>The DMP obtains new yaw measurements at a rate of 21 ms while the PID loop runs 
+                                    at a rate of approximately 34-40 ms. It means the DMP obtains new data at a slower rate
+                                    than the PID control loop. Therefore, I send the previous valid yaw measurement when there is
+                                    no new data available so that the PID controller can keep updating and correcting the orientation.
+                                </p>
+                                <img class="img-fluid" src="assets/img/portfolio/fullsize/dmp_rate.jpg" alt="DMP Rate" />
+                                <img class="img-fluid" src="assets/img/portfolio/fullsize/pid_rate.jpg" alt="PID Rate" />
+                                <!-- Code for DMP Measurements -->
+                                <script src="https://gist.github.com/bleev3/97a17bf140c3a7077653521f0d405895.js"></script>
+                                <p></p>
+                                <p><b>DMP Configurations</b></p>
+                                <p></p>
+                                <p>Since the DMP uses the FIFO to store new measurement values, I had to take into consideration the sampling rate of the DMP.
+                                    Therefore, I set the DMP to sample at a rate of approximately 10 Hz so that it would not fill up the FIFO.
+                                    I changed the sampling rate by changing the second argument of this function setDMPODRrate() to 4 so that I could sample the DMP
+                                    at a rate of approximately 10 Hz. The rest of the setup for the DMP can be 
+                                    found from this <a href=https://fastrobotscornell.github.io/FastRobots-2025/tutorials/dmp.html>DMP Tutorial</a> on the Fast Robots website.
+                                    The maximum rotational velocity that the gyroscope can read is +/- 2000 dps (degrees per second). This is sufficient enough for the 
+                                    stunts and movements that we will need in this course. 
+                                    If we want to configure the rotational velocity, we would need to change the sampling rate which can be done
+                                    by changing the DMP sensor to be INV_ICM20948_SENSOR_GAME_ROTATION_VECTOR in the function enableDMPSensor so we can get a rotational velocity of 2000 dps.
+                                </p>
+                                <!-- Code for Setting Uo DMP -->
+                                <script src="https://gist.github.com/bleev3/1a25979b6a9dbd6db4910ee6276e4040.js"></script>
+                                <p></p>
+                                <p><b>Proportional Control</b></p>
+                                <p></p>
+                                <!-- Proportional Control -->
+                                <p> I first started with getting the proportional control to work so that the robot stops at different target angles. For my DMP, I decided to set the range to be long range since we need to have our
+                                    PID controller work for various angles from -180 to 180. For the proportional control,
+                                    the sampling frequency for the DMP is around 20 ms which is relatively slow compared to the PID control
+                                    loop which is approximately 34-40 ms. As a result, the DMP is not producing new distance readings fast
+                                    enough for the PID controller to use to calculate the new PWM signal to send to the motors. 
+                                </p>
+                                <p> The P controller multiplies the error between the measured angle and the target angle and the Kp value
+                                    in order to generate the PWM signal that will be sent to the motors to move the robot closer to the target angle.
+                                </p>
+                                <p></p>
+                                <p>Through experimentation, I discovered that the deadband for the PWM signal was higher than it was for linear PID.
+                                    The minimum PWM signal to keep the robot moving is around 100 and the maximum PWM signal is around 200.
+                                    Also, the Kp value was higher than it was for linear PID control most likely because it takes more energy 
+                                    to turn from stationary as compared to moving forward. Furthermore, I had to consider edge cases such as when the angle
+                                    is -170 and the target angle is 180, the difference should be 30 degrees. However, due to the wrap around from -180 to 180,
+                                    the error will be 170 degrees to get from -170 to 0 and then another 180 to get from 0 to 180. This is a much longer
+                                    path to get there. To resolve this wrap around issue, I subtracted 360 from the error if the error was greater than 180
+                                    and added 360 if the error was less than -180. Then, the PID controller can find the shortest path to get to the target angle. 
+                                    The final Kp value I found that worked was 5. 
+                                    Below is a video showing my P controller working when changing the target angle and changing the current orientation of the robot by kicking it.
+                                    Also, I have provided graphs showing the measured angle, error, and PWM signal
+                                    when running the P controller. The target angle for this trial was 100 degrees.
+                                </p>
+                                <p></p>
+                                <!-- Video of Robot when using P controller -->
+                                <p></p>
+                                <div class="embed-container">
+                                    <iframe width="400" height="400" src="https://www.youtube.com/embed/IsamWOIiBR4"
+                                    frameborder="0" allowfullscreen></iframe>
+                                </div>
+                                <div class="embed-container">
+                                    <iframe width="400" height="400" src="https://www.youtube.com/embed/MAMZMKfAFVg"
+                                    frameborder="0" allowfullscreen></iframe>
+                                </div>
+                                <!-- Angle vs Time -->
+                                <img class="img-fluid" src="assets/img/portfolio/fullsize/orient_p_angle.jpg" alt="" />
+                                <!-- Error vs Time -->
+                                <img class="img-fluid" src="assets/img/portfolio/fullsize/orient_p_error.jpg" alt="" />
+                                <!-- Kp Term vs Time -->
+                                <img class="img-fluid" src="assets/img/portfolio/fullsize/orient_p_kp_term.jpg" alt="" />
+                                <!-- PWM vs Time -->
+                                <img class="img-fluid" src="assets/img/portfolio/fullsize/orient_p_pwm.jpg" alt="" />
+                                <!-- Code for P Controller -->
+                                <script src="https://gist.github.com/bleev3/38e273b1b65ec5a6af9aecdacca902e5.js"></script>
+                                <p></p>
+                                <p><b>Adding the Integral Term</b></p>
+                                <p></p>
+                                <p>After I knew that the proportional controller was working, I added the integral term.
+                                    The proportional term gets you as close to the target angle as quick as possible but the system is unstable.
+                                    Furthermore, if the Kp value is too high or too low, you will either overshoot or undershoot the setpoint.
+                                    The integral term is added so that you can correct the overshoot or undershoot so you get as 
+                                    close as possible to the setpoint and stabilize the system.
+                                    For the integral term, you add up the error based on the difference in time and then you multiply
+                                    that by the integral gain Ki.
+                                    I added a small Ki term since as can be shown in the Ki term graph shown below, the error accumulates
+                                    and if it accumulates too much, then the PWM signal will become too large and lead to overshoot. 
+                                    The final Kp and Ki terms that I got that made the system work was Kp = 8 and Ki =  0.01.
+                                    Below is a video showing my PI controller working and the following graphs shwoing my results: distance, error, Kp term,
+                                    Ki term, and PWM. The target angle was again set to 160 degrees.
+                                </p>
+                                <!-- Video of Robot when using PI controller -->
+                                <p></p>
+                                <div class="embed-container">
+                                    <iframe width="400" height="400" src="https://www.youtube.com/embed/EaraxlQdcCI"
+                                    frameborder="0" allowfullscreen></iframe>
+                                </div>
+                                <!-- Angle vs Time -->
+                                <img class="img-fluid" src="assets/img/portfolio/fullsize/orient_pi_angle.jpg" alt="" />
+                                <!-- Error vs Time -->
+                                <img class="img-fluid" src="assets/img/portfolio/fullsize/orient_pi_error.jpg" alt="" />
+                                <!-- Kp Term vs Time -->
+                                <img class="img-fluid" src="assets/img/portfolio/fullsize/orient_pi_kp.jpg" alt="" />
+                                <!-- Ki Term vs Time -->
+                                <img class="img-fluid" src="assets/img/portfolio/fullsize/orient_pi_ki.jpg" alt="" />
+                                <!-- PWM vs Time -->
+                                <img class="img-fluid" src="assets/img/portfolio/fullsize/orient_pi_pwm.jpg" alt="" />
+                                <!-- Code for PI Controller -->
+                                <script src="https://gist.github.com/bleev3/925ddc98db06175c548c1a0db32f2b39.js"></script>
+                                
+                                <p><b>Additional Task: Integral Windup</b></p>
+                                <p></p>
+                                <p>As shown in the previous section, the integral term can increase until it oversaturates the PWM signal
+                                    and as a result, it takes a long term for the integral term to decrease the PWM signal and get the 
+                                    robot to reach the setpoint. This is called integral windup. In order to mitigate this effect, I protect the system from integral windup
+                                    by checking the sign of the unclamped output of the PID controller and the error as well as whether
+                                    the unclamped output of the PID controller is equal to the clamped output of the PID controller.
+                                    If the signs of the error term and the PID controller are the same adn the unclapmed and clamped PID controller outputs
+                                    are not the same value, then we zero out the integral term so that we can decrease the PWM signal faster.
+                                    As a result, we can get to the setpoint faster than if we did not implement integral windup protection.
+                                    The final Kp value is 10, Ki value is 5, and the target angle is again 100 degrees.
+                                    Below is my implementation of integral windup protection and a video showing that it works for the robot.
+                                    Also, I have included graphs for the measured angle, error, Kp and Ki terms, and the PWM signal. The target
+                                    angle is also 100 degrees.
+
+
+                                </p>
+                                <!-- Code for Integral Windup Protection -->
+                                <script src="https://gist.github.com/bleev3/ed3a32e8e9a9dd4a53cdbf8e9377863e.js"></script>
+                                <!-- Video of Integral Windup Protection -->
+                                <div class="embed-container">
+                                    <iframe width="400" height="400" src="https://www.youtube.com/embed/wJMjz2lYe38"
+                                    frameborder="0" allowfullscreen></iframe>
+                                </div>
+                                <!-- Graphs for Integral Windup -->
+                                <!-- Angle vs Time -->
+                                <img class="img-fluid" src="assets/img/portfolio/fullsize/orient_pi_windup_angle.jpg" alt="" />
+                                <!-- Error vs Time -->
+                                <img class="img-fluid" src="assets/img/portfolio/fullsize/orient_pi_windup_error.jpg" alt="" />
+                                <!-- Kp Term vs Time -->
+                                <img class="img-fluid" src="assets/img/portfolio/fullsize/orient_pi_windup_kp.jpg" alt="" />
+                                <!-- Ki Term vs Time -->
+                                <img class="img-fluid" src="assets/img/portfolio/fullsize/orient_pi_windup_ki.jpg" alt="" />
+                                <!-- PWM vs Time -->
+                                <img class="img-fluid" src="assets/img/portfolio/fullsize/orient_pi_windup_pwm.jpg" alt="" />
+                                <p></p>
+                                <p><b>Discussion</b></p>
+                                <p></p>
+                                <p>Currently, I can only send commands one at a time. I need to wait for one Bluetooth command to finish 
+                                    before starting a new Bluetooth command. In the future, I believe that by adding my PID
+                                    control to the main loop, I will be able to interrupt the PID loop with a Bluetooth command
+                                    so I can change the setpoint. This will be useful in the future since we may need to be able
+                                    to quickly change direction if we want to make sharp turns during our stunts. 
+                                    Also, in the future, I could run the PID loop in the main loop and just have 
+                                    the commands change between setpoint or target angle and in real time change the Kp and Ki values. 
+
+                                </p>
+    
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <!-- Modal 5 -->
                 <div class="modal fade" id="portfolioModal5" tabindex="-1" aria-labelledby="portfolioModal5Label" aria-hidden="true">
                     <div class="modal-dialog">
@@ -312,7 +537,7 @@
                                 <img class="img-fluid" src="assets/img/portfolio/fullsize/pid_eqn.jpg" alt="PI Controller" />
                                 <p>In this lab, the objective was to explore linear PID control, predict the output of the PID controller
                                     using extrapolation when there is no new data from the ToF sensor, and how to mitigate the effects of integral
-                                    windup and .
+                                    windup.
                                 </p>
                                 <h7 class="mt-4"><u>Prelab</u></h7>
                                 <p></p>
