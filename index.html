@@ -308,8 +308,186 @@
                         </div>
                     </a>
                 </div>
+                <!-- Portfolio Item 7 -->
+                <div class="col-lg-4 col-sm-6">
+                    <a class="portfolio-box" href="#" data-bs-toggle="modal" data-bs-target="#portfolioModal7">
+                        <img class="img-fluid" src="assets/img/portfolio/thumbnails/kalman_filter.jpg" alt="..." />
+                        <div class="portfolio-box-caption">
+                            <div class="project-category text-white-50">Lab 7</div>
+                            <div class="project-name">Kalman Filter</div>
+                        </div>
+                    </a>
+                </div>
 
                 <!-- All Modals/Content for Labs Go Here -->
+                <!-- Modal 7 -->
+                <div class="modal fade" id="portfolioModal7" tabindex="-1" aria-labelledby="portfolioModal7Label" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="portfolioModalL7abel">Lab 7: Kalman Filter</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <img class="img-fluid" src="assets/img/portfolio/fullsize/kalman_filter_eqns.jpg" alt="Kalman Filter" />
+                                <p>In this lab, the objective was to make our PID controller faster by using the Kalman filter.
+                                </p>
+                                <h7 class="mt-4"><u>Kalman Filter Simulation in Python</u></h7>
+                                <p></p>
+                                <h7 class="mt-4">Estimating Drag and Momentum by using the Step Response</h7>
+                                <p></p>
+                                <p> In order to calculate drag and momentum, I first had to input a step response. For my step response,
+                                    I chose a PWM signal of 170 which is 85% of the maximum PWM I used in lab 6 which was 200.
+                                    I let the code run for 10 seconds to ensure that my robot reached steady state.
+                                    Below is my implementation of the step response on the Arduino side and graphs
+                                    demonstrating that my robot reached steady state.
+                                </p>
+                                <!-- Arduino Code -->
+                                <script src="https://gist.github.com/bleev3/4936ad8f4c08fca181c4e303cb50694c.js"></script>
+                                <!-- Distance and PWM vs Time for Step Response -->
+                                <img class="img-fluid" src="assets/img/portfolio/fullsize/step_data.jpg" alt="Distance and PWM vs Time" />
+                                <p></p>
+                                <p>From the distance measurements, I was able to roughly estimate the velocity of my robot as it reached steady state.
+                                    The calculations for velocity is to take the average of two distance measurements and divide by time. 
+                                    The velocity calculation in Python and the velocity vs time graph is shown below.</p>
+                                <!-- Python Code -->
+                                <script src="https://gist.github.com/bleev3/e970b8bae033a9cf4cd41ff1bd173052.js"></script>
+                                <!-- Velocity vs Time for Step Response -->
+                                <img class="img-fluid" src="assets/img/portfolio/fullsize/velocity_step_graph.jpg" alt="Velocity vs Time" />
+                                <p></p>
+                                <p>Then, I was able to estimate the steady state speed by fitting an exponetial curve to my velocity data and I was
+                                    able to roughly estimate the steady speed which was -1970mm/s. In order to find the 90% rise time velocity,
+                                    I did -1970mm/s * 0.9 = -1773 mm/s. Then, from there, I was able to roughly estimate the 90% rise time which I found to be
+                                    19.8 s (when at steady state speed) - 18.6 s (at 90% of the steady state speed) = 1.2 s. Below is a graph showing the 
+                                    speed at 90% rise time and the 90% rise time.
+                                </p>
+                                <!-- 90% Rise Time and Speed -->
+                                <img class="img-fluid" src="assets/img/portfolio/fullsize/90_percent_rise.jpg" alt="90% Speed and Rise Time" />
+                                <p></p>
+                                <p>From there, I could calculate the drag and momentum by using the steady state speed. I used the equations shown
+                                    below to calculate drag and momentum. As a result, I got my drag to be 
+                                    0.5076142131979767 and momentum to be 264.5448620730506
+                                </p>
+                                <!-- Drag and Momentum Equations -->
+                                <img class="img-fluid" src="assets/img/portfolio/fullsize/drag_eqn.jpg" alt="Drag Eqn" />
+                                <img class="img-fluid" src="assets/img/portfolio/fullsize/momentum_eqn.jpg" alt="Momentum Eqn" />
+                                <!-- Results from Python -->
+                                <img class="img-fluid" src="assets/img/portfolio/fullsize/drag.jpg" alt="Drag" />
+                                <img class="img-fluid" src="assets/img/portfolio/fullsize/momentum.jpg" alt="Momentum" />
+                                <p></p>
+                                <h7 class="mt-4"><u>Computing A, B, A_d, B_d, and C Matrices</u></h7>
+                                <p></p>
+                                <p>I calculated the A and B matrices based on the state space equations shown below. In order to find the 
+                                    discretized A and B matrices (A_d and B_d), I multiplied by the sampling time for my ToF sensor which is 30 ms.
+                                    The results for my A, B, A_d, and B_d matrices are also shown below. 
+                                </p>
+                                <!-- A and B Equations -->
+                                <img class="img-fluid" src="assets/img/portfolio/fullsize/A_B_C_matrices.jpg" alt="A, B Matrices" />
+                                <!-- A_d and B_d Equations -->
+                                <img class="img-fluid" src="assets/img/portfolio/fullsize/Ad_Bd_matrices.jpg" alt="A_d, B_d Matrices" />
+                                <!-- Results from Python -->
+                                <img class="img-fluid" src="assets/img/portfolio/fullsize/A_B.jpg" alt="A, B" />
+                                <img class="img-fluid" src="assets/img/portfolio/fullsize/Ad_Bd.jpg" alt="A_d, B_d" />
+                                <p></p>
+                                <h7 class="mt-4"><u>C Matrix and State Vector</u></h7>
+                                <p></p>
+                                <p>For my C matrix, I used C = [1, 0] because my distances are positive and decreasing in time.
+                                    For my state vector x, I used x = [tof_1[0], 0]. The state vector represents the distance that the 
+                                    ToF sensor reads and the 0 represents 0 velocity. Below, I show how I initialized my C matrix and 
+                                    x state vector.
+                                </p>
+                                 <!-- C matrix and X state vector -->
+                                <img class="img-fluid" src="assets/img/portfolio/fullsize/C_and_X.jpg" alt="C matrix and X state vector" />
+                                <p></p>
+                                <h7 class="mt-4"><u>Process Noise and Sensor Noise</u></h7>
+                                <p></p>
+                                <p>For my process noise which corresponds to sigma u, I chose 100. For my measurement noise, I chose 18.
+                                    I chose a higher process noise and lower measurement noise because I trust my measurements more than the predicted model. </p>
+                                <!-- Python Code Process Noise and Measurement Noise -->
+                                <script src="https://gist.github.com/bleev3/d0ea5c5d014456c236a4611b6ea89357.js"></script>
+                                <!-- Results of Process and Measurement Noise -->
+                                <img class="img-fluid" src="assets/img/portfolio/fullsize/process_measurement_noise.jpg" alt="Process and Measurement Noise" /> 
+                                <p></p>
+                                <h7 class="mt-4"><u>Results of Kalman Filter on Lab 5 Data</u></h7>
+                                <p></p>
+                                <p>For my Kalman filter implementation, I used the Kalman filter function which was provided to us in the lab handout.
+                                    I modified it slightly so that it takes in another parameter called new_data which tells whether or not new data 
+                                    has been collected since the last time. If there is no new data available, only the prediction step is calculated and
+                                    the resulting x and sigma matrices are returned. If there is new data, we should run both the prediction step to see where we
+                                    are now and our current velocity as well as update our current x and sigma matrices based on this new data.
+                                </p>
+                                <!-- Python Code for Kalman Filter -->
+                                <script src="https://gist.github.com/bleev3/86228bf31819e2bbc33f8d0ab2b6d1a6.js"></script>
+                                <p></p>
+                                <p>I used my lab 5 linear PID data that I saved from a successful run. In order to run the Kalman filter on my lab 5 data,
+                                    I created a loop that would go through the time data from lab 5. If the time was less than or equal to the current time in the lab 5 time array,
+                                    I said that we had new data and we go to the update step of the Kalman filter. If the time was greater than the current time,
+                                    I said that we had no new data and would just do the prediction step since we are not in sync with the actual lab 5 data.
+                                    I ended up choosing process noise to be 20 and measurement noise to be 10 since I trusted the measurements more than the model.
+                                    The result was a pretty close estimate from the Kalman filter as compared to the actual lab 5 data.
+                                </p>
+                                <!-- Python Code for Iterating Through Lab 5 Data -->
+                                <script src="https://gist.github.com/bleev3/2f7a785c85e53f05878b90f39e6f049b.js"></script>
+                                <!-- Result of Kalman Filter from Simulation -->
+                                <img class="img-fluid" src="assets/img/portfolio/fullsize/kf_simul_results.jpg" alt="Simulation of Kalman Filter Result" /> 
+                                <h7 class="mt-4"><u>Kalman Filter Implementation on Robot</u></h7>
+                                <p></p>
+                                <h7 class="mt-4">Setup for Kalman Filter in Arduino</h7>
+                                <p>On the Arduino side, I had to import the BasicLinearAlgebra library in Arduino so I could use the in-built matrix functions for my Kalman filter.
+                                    Then, I copied over the drag, momentum, A, B, A_d, B_d, C, and sigma matrices as well as the x state vector values that I found from my Python simulation
+                                    into the Arduino code.
+                                </p>
+                                <p></p>
+                                <!-- Setup of Matrices and Vector for Kalman Filter -->
+                                <script src="https://gist.github.com/bleev3/cdbb9951592fb9a6acb6d0776f0d7524.js"></script>
+                                <p></p>
+                                <p>In order to implement the Kalman filter, I had to create a Kalman filter function which checks whether new data is avaialable or not.
+                                    If it is, then the prediction and update steps are run. If there is no new data available, then only the prediction step is run.
+                                    New data is determined by checking whether or not the ToF sensor is ready meaning that a new distance measurement is available, If there is a new measurement avaialable,
+                                    then new_data is true. Otherwise, if there is no new distance measurement, new_data is set to false.
+                                    I also had to modify my linear PID function so that it would calculate the new PWM signal to send to the motors based on the distance calculated
+                                    by the Kalman filter.
+                                    The Kalman filter function, modified PID controller for the Kalman filter, and the case statement to call the Kalman filter and determine if new data is ready are all
+                                    shown below.
+                                </p>
+                                <p></p>
+                                <!-- Kalman Filter Function -->
+                                <script src="https://gist.github.com/bleev3/daacad107908f81bf226b9f6340fb4f8.js"></script>
+                                <!--Modified Kalman Filter PID Control  -->
+                                <script src="https://gist.github.com/bleev3/34864ce9d62dff937e5b0fee8118fc0c.js"></script>
+                                <!-- Kalman Filter Implementation on Robot -->
+                                <script src="https://gist.github.com/bleev3/d0b6d65ec80e792e04191e6ddad169aa.js"></script>
+                                <p></p>
+                                <p> Below shows my Kalman filter working on the robot and the distance readings from the Kalman filter as well as the 
+                                    resulting PWM signal sent to the motors based on the Kalman filter. As can be seen from the graph, my Kalman filter follows
+                                    my ToF measurement readings fairly accurately and I was able to get to the setpoint much faster.
+                                </p>
+                                <!-- Video of Robot working with Kalman Filter -->
+                                <p></p>
+                                <div class="embed-container">
+                                    <iframe width="400" height="400" src="https://www.youtube.com/embed/XNFAkzUDYrE"
+                                    frameborder="0" allowfullscreen></iframe>
+                                </div>
+                                <!-- Graphs from Run with Kalman Filter -->
+                                <!-- Distance vs Time -->
+                                <img class="img-fluid" src="assets/img/portfolio/fullsize/kf_robot_dist.jpg" alt="KF Distance" />
+                                <!-- PWM vs Time -->
+                                <img class="img-fluid" src="assets/img/portfolio/fullsize/kf_robot_pwm.jpg" alt="KF PWM" />
+                                <p></p>
+                                <h7 class="mt-4"><u>Discussion</u></h7>
+                                <p></p>
+                                <p> Overall, I was able to see that the Kalman filter makes my PID loop run faster and more efficiently.
+                                </p>
+                                <p></p>
+                                <h7 class="mt-4"><u>References</u></h7>
+                                <p></p>
+                                <p>I referenced Stephen Wagner's and Mikayla Lahr's past lab reports.</p>
+                                <p></p>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <!-- Modal 6 -->
                 <div class="modal fade" id="portfolioModal6" tabindex="-1" aria-labelledby="portfolioModal6Label" aria-hidden="true">
                     <div class="modal-dialog">
