@@ -318,8 +318,103 @@
                         </div>
                     </a>
                 </div>
-
+                <!-- Portfolio Item 8 -->
+                <div class="col-lg-4 col-sm-6">
+                    <a class="portfolio-box" href="#" data-bs-toggle="modal" data-bs-target="#portfolioModal8">
+                        <img class="img-fluid" src="assets/img/portfolio/thumbnails/robot_assembly.jpg" alt="..." />
+                        <div class="portfolio-box-caption">
+                            <div class="project-category text-white-50">Lab 8</div>
+                            <div class="project-name">Stunts</div>
+                        </div>
+                    </a>
+                </div>
                 <!-- All Modals/Content for Labs Go Here -->
+                <!-- Modal 8 -->
+                <div class="modal fade" id="portfolioModal8" tabindex="-1" aria-labelledby="portfolioModal8Label" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="portfolioModal8Label">Lab 8: Stunts</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <img class="img-fluid" src="assets/img/portfolio/thumbnails/robot_assembly.jpg" alt="Robot" />
+                                <p>In this lab, the objective for task A flip is to make the robot flip when it is 0.5 m from the wall and then
+                                    immediately return to the starting line.
+                                </p>
+                                <h7 class="mt-4"><u>Task A: Flip</u></h7>
+                                <p></p>
+                                <p></p>
+                                <p> In order to do the flip, I experimented with trying to use the ToF sensor distance readings in order to determine 
+                                    when the robot was 0.5 m from the wall. The robot would run straight forward until it reached 0.5 m from the wall and then
+                                    stop for a few seconds. Then, it would go backwards to the start line. However, through trial and error,
+                                    I found that pure open loop control by timing out how long it would take to get 0.5 m from the wall proved to be easier.
+                                    Therefore, my final solution was pure open loop control where I would go forward at a PWM of 255 until 500 ms. Then,
+                                    I would immediately go backwards at a PWM of 255, stop for a short amount of time, and then go backwards to the start line.
+                                    Below is my final code for Arduino which is pure open loop control and the Python command to start the 
+                                    flip stunt.
+                                </p>
+                                <!-- Arduino Code -->
+                                <script src="https://gist.github.com/bleev3/bb123d7b3d5abda20023d50855c1a50e.js"></script>
+                                <!-- Python Code -->
+                                <script src="https://gist.github.com/bleev3/329a04975a188a1e2e879b1ffd1549a2.js"></script>
+                                <!-- Distance and PWM vs Time for Step Response -->
+                                <img class="img-fluid" src="assets/img/portfolio/fullsize/step_data.jpg" alt="Distance and PWM vs Time" />
+                                <p></p>
+                                <p>Below are three videos showing the flip stunt working and three graphs showing the ToF data and PWM signal
+                                    when the robot was doing the flip stunt. The average time it took for the stunt was 3 to 4 seconds.
+                                </p>
+                                <!-- Videos Showing Flip Works 3 Times -->
+                                <div class="embed-container">
+                                    <iframe width="400" height="400" src="https://www.youtube.com/embed/rSzVuB2DUIE"
+                                    frameborder="0" allowfullscreen></iframe>
+                                </div>
+                                <div class="embed-container">
+                                    <iframe width="400" height="400" src="https://www.youtube.com/embed/2Rezsp7ikTc"
+                                    frameborder="0" allowfullscreen></iframe>
+                                </div>
+                                <div class="embed-container">
+                                    <iframe width="400" height="400" src="https://www.youtube.com/embed/8GfJXF6h3iQ"
+                                    frameborder="0" allowfullscreen></iframe>
+                                </div>
+                                <!-- Distance and PWM vs Time Graphs for Stunts-->
+                                <p><b>Trial 1</b></p>
+                                <img class="img-fluid" src="assets/img/portfolio/fullsize/Trial_1.jpg" alt=" Trial 1: Distance and PWM vs Time" />
+                                <p><b>Trial 2</b></p>
+                                <img class="img-fluid" src="assets/img/portfolio/fullsize/Trial_2.jpg" alt=" Trial 2: Distance and PWM vs Time" />
+                                <p><b>Trial 3</b></p>
+                                <img class="img-fluid" src="assets/img/portfolio/fullsize/Trial_3.jpg" alt=" Trial 3: Distance and PWM vs Time" />
+                                <p></p>
+                                <h7 class="mt-4"><u>Discussion</u></h7>
+                                <p></p>
+                                <p> Overall, it was interesting to see how I could use functions from previous labs
+                                    in order to create the flip.
+                                </p>
+                                <p></p>
+                                <h7 class="mt-4"><u>Bloopers</u></h7>
+                                <p></p>
+                                <p> Here are some funny bloopers showing the robot go a bit out of control when trying to do the flip stunt.
+                                </p>
+                                <!-- Blooper Videos -->
+                                <p></p>
+                                <div class="embed-container">
+                                    <iframe width="400" height="400" src="https://www.youtube.com/embed/ItXiiD2sPWs"
+                                    frameborder="0" allowfullscreen></iframe>
+                                </div>
+                                <div class="embed-container">
+                                    <iframe width="400" height="400" src="https://www.youtube.com/embed/ifQTY8FZpx4"
+                                    frameborder="0" allowfullscreen></iframe>
+                                </div>
+                                <p></p>
+                                <h7 class="mt-4"><u>References</u></h7>
+                                <p></p>
+                                <p>I worked with Annabel Lian and Katarina Duric on this lab by sharing ideas of how to implement the flip.</p>
+                                <p></p>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <!-- Modal 7 -->
                 <div class="modal fade" id="portfolioModal7" tabindex="-1" aria-labelledby="portfolioModal7Label" aria-hidden="true">
                     <div class="modal-dialog">
