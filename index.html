@@ -330,7 +330,7 @@
                 </div>
                 <!-- Portfolio Item 9 -->
                 <div class="col-lg-4 col-sm-6">
-                    <a class="portfolio-box" href="#" data-bs-toggle="modal" data-bs-target="#portfolioModal9">
+                    <a class="portfolio-box" href="#" data-bs-toggle="modal" data-bs-target="#portfolioModal10">
                         <img class="img-fluid" src="assets/img/portfolio/thumbnails/final_map.jpg" alt="..." />
                         <div class="portfolio-box-caption">
                             <div class="project-category text-white-50">Lab 9</div>
@@ -338,7 +338,136 @@
                         </div>
                     </a>
                 </div>
+                <!-- Portfolio Item 10 -->
+                <div class="col-lg-4 col-sm-6">
+                    <a class="portfolio-box" href="#" data-bs-toggle="modal" data-bs-target="#portfolioModal10">
+                        <img class="img-fluid" src="assets/img/portfolio/thumbnails/bayes_lab10.jpg" alt="..." />
+                        <div class="portfolio-box-caption">
+                            <div class="project-category text-white-50">Lab 10</div>
+                            <div class="project-name">Localization(sim)</div>
+                        </div>
+                    </a>
+                </div>
                 <!-- All Modals/Content for Labs Go Here -->
+                <!-- Modal 10 -->
+                <div class="modal fade" id="portfolioModal10" tabindex="-1" aria-labelledby="portfolioModal10Label" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="portfolioModal10Label">Lab 10: Localization (sim)</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <img class="img-fluid" src="assets/img/portfolio/thumbnails/bayes_lab10.jpg" alt="Final Map" />
+                                <p></p>
+                                <p>In this lab, the objective is to implement grid localization by using the Bayes filter 
+                                    and showing the results of the localization in the Python simulation. 
+                                </p>
+                                <h7 class="mt-4"><u>Implementing the Bayes Filter</u></h7>
+                                <p></p>
+                                <p></p>
+                                <h7 class="mt-4"><b>Compute Control Function</b></h7>
+                                <p></p>
+                                <p> The robot's motion can be described by three parameters: the initial angle of the robot which we'll call delta_rot_1,
+                                    the translation described by the linear motion the robot takes to go from the initial to the current position which 
+                                    we'll call delta_trans,
+                                    and the current angle of the robot which we'll call delta_rot_2.  
+                                    For the compute_control, we take the current and previous odmoetry poses to determine the motion control needed in 
+                                    order to get from the previous to the current odometry pose. The equations and implementation for the control function are shown below.
+                                </p>
+                                <p></p>
+                                <!--Compute Control Equations  -->
+                                <img class="img-fluid" src="assets/img/portfolio/fullsize/odometry_control_eqns.jpg" alt=" Odometry Control Parameters" />
+                                <!-- Compute Control Function -->
+                                <script src="https://gist.github.com/bleev3/32c6a9d8c723fc09081fd9281b1d005c.js"></script>
+                                <p></p>
+                                <h7 class="mt-4"><b>Odometry Motion Model Function</b></h7>
+                                <p></p>
+                                <p> The odometry motion model determines the conditional probability that the robot is in the current pose given the previous pose and 
+                                    control motion (action) that the robot did. We use a Gaussian distribution in order to model the random noise in our measurements 
+                                    and the uncertainty in our model. Below are the equations and code used to implement the odom_motion_model.
+                                </p>
+                                <p></p>
+                                <!-- Odometry Motion Model Equations -->
+                                <img class="img-fluid" src="assets/img/portfolio/fullsize/odometry_motion_model_eqns.jpg" alt=" Odometry Motion Model Equations" />                                
+                                <!-- Odometry Motion Model Function -->
+                                <script src="https://gist.github.com/bleev3/590e4a82b94dca6e28024edce60c2c81.js"></script>
+                                <p></p>
+                                <h7 class="mt-4"><b>Prediction Step of Bayes Filter</b></h7>
+                                <p></p>
+                                <p> 
+                                    In the prediction step of the Bayes filter, it uses the current pose and the previous pose 
+                                    in order to calculate the transition probabilities for all cells within the grid. In turn,
+                                    the prediction step determines the probability that the robot moved to this particular cell after 
+                                    a certain action from its' previous position. To make the calculation faster, I skip doing the prediction step 
+                                    for a grid cell that has a probability less than 0.0001 since it is not likely that the robot will go to that particular cell.
+                                    As a result of not calculating the probabilities of all of the grid cells, I have to normalize my probabilities at the end so that all probabilities sum to 1.
+                                    The prediction step equation and code implementation are shown below.</p>
+                                <p></p>
+                                <!-- Prediction Step Equation -->
+                                <img class="img-fluid" src="assets/img/portfolio/fullsize/bayes_pred_eqn.jpg" alt=" Prediction Step" />     
+                                <!-- Prediction Step of Bayes Filter -->
+                                <script src="https://gist.github.com/bleev3/cdf9c4c18b9e3683d4b7cc6c2f6381ba.js"></script>
+                                <p></p>
+                                <h7 class="mt-4"><b>Sensor Model</b></h7>
+                                <p></p>
+                                <p> 
+                                    The sensor model determines the probability that the sensor reading from the robot is correct given 
+                                    the current state of the robot. We model our observations as a Gaussian distribution. In this particular case,
+                                    we look at the 18 measurements that the robots reads when it is observing the entire trajectory.
+                                    My code implementation is shown below.
+                                </p>
+                                <p></p>
+                                <!-- Sensor Model -->
+                                <script src="https://gist.github.com/bleev3/f4abe4ca77092e55aba7c80cafcd4cec.js"></script>
+                                <p></p>
+                                <h7 class="mt-4"><b>Update Step of Bayes Filter</b></h7>
+                                <p></p>
+                                <p> 
+                                    The update step of the Bayes filter is taking the prior belief of each grid cell and multiplying that by the
+                                    conditional probability provided in the sensor model that the robot is in that particular grid cell given the current
+                                    state of the robot. In turn, the update step creates a new belief for each grid cell.
+                                    I have to normalize my probabilities at the end so that all probabilities sum to 1.
+                                    The update step equation and code implementation are shown below.
+                                </p>
+                                <p></p>
+                                <!-- Update Step Equation -->
+                                <img class="img-fluid" src="assets/img/portfolio/fullsize/bayes_update_eqn.jpg" alt=" Update Step" />                             
+                                <!-- Update Step of Bayes Filter -->
+                                <script src="https://gist.github.com/bleev3/35ccb92cdf1ee0e4da9c11c4bc011280.js"></script>
+                                <p></p>
+                                <h7 class="mt-4"><b>Simulation Results</b></h7>
+                                <p></p>
+                                <p> 
+                                    In the first video, I show localization without the Bayes filter. The green line
+                                    shows the ground truth and the red line shows the odometry measurements. 
+                                    In the second video, I show localization with the Bayes filter. When running the Bayes filter, 
+                                    I also introduce the belief which is shown with a blue line. 
+                                    As shown in the data below when running my Bayes filter, even when the odometry reading is unreliable, the belief and ground truth closely match.
+                                    The Bayes filter works especially well when the robot is close to the walls since the sensor can read the distance better since it
+                                    has a reference point as compared to when measuring in the open area of the arena.
+                                </p>
+                                <p></p>
+                                <!-- Videos Showing Localization without Bayes Filter -->
+                                <div class="embed-container">
+                                    <iframe width="400" height="400" src="https://www.youtube.com/embed/mAGK4EqcNsI"
+                                    frameborder="0" allowfullscreen></iframe>
+                                </div>
+                                <!-- Videos Showing Localization with Bayes Filter -->
+                                <div class="embed-container">
+                                    <iframe width="400" height="400" src="https://www.youtube.com/embed/H97lyjTKa20"
+                                    frameborder="0" allowfullscreen></iframe>
+                                </div>
+                                <!-- Data from Bayes Filter -->
+                                <script src="https://gist.github.com/bleev3/de184122dc836ef96b8cb06c504af42b.js"></script>       
+                                <h7 class="mt-4"><u>References</u></h7>
+                                <p></p>
+                                <p>I referenced Daria Kot's and Stephen Wagner's pages to implement the Bayes filter.</p>
+                                <p></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <!-- Modal 9 -->
                 <div class="modal fade" id="portfolioModal9" tabindex="-1" aria-labelledby="portfolioModal9Label" aria-hidden="true">
                     <div class="modal-dialog">
