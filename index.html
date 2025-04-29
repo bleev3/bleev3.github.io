@@ -348,7 +348,147 @@
                         </div>
                     </a>
                 </div>
+                <!-- Portfolio Item 11 -->
+                <div class="col-lg-4 col-sm-6">
+                    <a class="portfolio-box" href="#" data-bs-toggle="modal" data-bs-target="#portfolioModal11">
+                        <img class="img-fluid" src="assets/img/portfolio/fullsize/lab11_-3_-2_trial1_map.jpg" alt="..." />
+                        <div class="portfolio-box-caption">
+                            <div class="project-category text-white-50">Lab 11</div>
+                            <div class="project-name">Localization(real)</div>
+                        </div>
+                    </a>
+                </div>
                 <!-- All Modals/Content for Labs Go Here -->
+                <!-- Modal 11 -->
+                <div class="modal fade" id="portfolioModal11" tabindex="-1" aria-labelledby="portfolioModal11Label" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="portfolioModal11Label">Lab 11: Localization (real)</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <img class="img-fluid" src="assets/img/portfolio/fullsize/lab11_-3_-2_trial1_map.jpg" alt="Bayes Filter Localization Map" />
+                                <p></p>
+                                <p>In this lab, the objective is to implement grid localization by using the update step of the Bayes filter on the robot. 
+                                </p>
+                                <h7 class="mt-4"><u>Implementing the Bayes Filter</u></h7>
+                                <p></p>
+                                <p></p>
+                                <h7 class="mt-4"><b>Simulation Results from Bayes Filter</b></h7>
+                                <p></p>
+                                <p> The Bayes filter code that was provided to us in the lab produced similar results as my implementation of 
+                                    the Bayes filter in the last lab. Below is a picture showing the results from the Byaes filter implementation provided to us.
+                                </p>
+                                <p></p>
+                                <!-- Lab 11 Bayes Filter Simulation Results -->
+                                <img class="img-fluid" src="assets/img/portfolio/fullsize/lab11_sim_map.jpg" alt=" Localization from Lab 11 Bayes Filter Implementation" /> 
+                                <p></p>
+                                <h7 class="mt-4"><b>Modifications to Arduino Code</b></h7>
+                                <p></p>
+                                <p> Since the Bayes filter code that was provided assumes that the robot is rotating counterclockwise and the
+                                    ToF sensor is facing the right, I had to modify my Arduino code. In order to make the robot spin counterclockwise,
+                                    I had the robot go from a target angle of 360 and decrement by 20 degrees until the robot reaches 0 degrees.
+                                    Also, since the given Bayes filter assumes that 18 readings are taken over the 360 degree rotation, I modified the mapping code                                    
+                                    so that the robot only takes 18 readings. The code is provided below. A video showing the robot moving counterclockwise in the arena 
+                                    is also shown below.
+                                </p>
+                                <!-- Modification to Mapping Code -->
+                                <script src="https://gist.github.com/bleev3/c3331f5f73decd7ade450d5bfa507675.js"></script>
+                                <!-- Counterclockwise Rotation Video -->
+                                <div class="embed-container">
+                                    <iframe width="400" height="400" src="https://www.youtube.com/embed/De2703SrjZ0"
+                                    frameborder="0" allowfullscreen></iframe>
+                                </div>
+                                <p></p>
+                                <h7 class="mt-4"><b>Perform Observation Loop Function</b></h7>
+                                <p></p>
+                                <p>I integrated code from Lab 9: Mapping into the Python code for the perform_observation_loop() function.
+                                Since I split up my 360 degree rotation of the robot and sending of the data to Python,
+                                I opted to add sleep functions to ensure that enough time elapsed for the 360 degree rotation command to finish before 
+                                calling the send data command. I also added a sleep function after the send data command so that I would ensure that Python
+                                received all the data it expected to receive (in this case it would be time, angles, and distance readings) before stopping
+                                the notification handler. 
+                                Furthermore, for the sensor_ranges array, I divided my distance measurements from my ToF sensor by 1000 since the Bayes filter code
+                                assumes that all distance measurements are in meters. Below is my implementation of perform_observation_loop().                                  
+                                </p>
+                                <p></p>                            
+                                <!-- Perform Observation Loop Function -->
+                                <script src="https://gist.github.com/bleev3/c852fde519e5538f2c12e38b9db1560f.js"></script>
+                                <p></p>
+                                <h7 class="mt-4"><b>Results of Localization Using Bayes Filter on the Real Robot</b></h7>
+                                <p></p>
+                                <p> Below are the results of the localization of the points (5,-3), (-3, -2), (0, 3), and (5, 3). I ran the Bayes filter 
+                                    twice on each point. The green dot represents the ground truth and the blue dot represents the belief from the Bayes filter.</p>
+                                <p></p>
+                                <p>Based on my results, the robot was able to accurately determine the localized pose within approximately 2 feet
+                                    of the actual point. The interesting thing that I discovered while running the Bayes filter was that my probability 
+                                    was close to 1 for every trial that I took. I believe that is because there was enough time given in between measurements
+                                    that the model was fairly certain that this was the localization pose the robot was in. If I changed the time that the perform_observation_loop()
+                                    was sleeping in between commands, it resulted in lower probability most likely due to not having enough measurements for the model to be certain that 
+                                    the robot was in this localization pose. 
+                                   </p>
+                                <p></p>
+                                <p>Furthermore, the robot localizes better in the poses (0, 3) and (5, 3) since there are distinct features in these two poses.
+                                    (5, 3) has a shorter distance when the robot faces the right and as the robot spins, it will see the edges of the inner box located in the 
+                                    map. At the pose (0, 3), the robot sees more empty space and reads a higher distance value as it rotates 360 degrees.
+                                    The robot does worse when it localizes the poses (-3, -2) and (5, -3) since the distance to the wall and the layout of those two parts of the map 
+                                    are very similar. Therefore, the robot cannot determine its' orientation and figure out whether it is on the bottom left or bottom right edge of the map.
+                                    As a result, the robot sometimes thought that it was close to (-3, -2) when it was actually in the pose (5, -3) and vice versa due to the similar 
+                                    environment and distance readings when making the 360 degree turn.  </p>
+                                <p></p>
+                                <h7 class="mt-4"><b>(5, -3)</b></h7>
+                                <p></p>
+                                <!-- Localization Trial 1 -->
+                                <img class="img-fluid" src="assets/img/portfolio/fullsize/lab11_5_-3_trial1_map.jpg" alt=" Trial 1 Map" />     
+                                <!-- Localization Belief Trial 1 -->
+                                <img class="img-fluid" src="assets/img/portfolio/fullsize/lab11_5_-3_trial1_beliefs.jpg" alt=" Trial 1 Beleif" /> 
+                                <!-- Localization Trial 2-->
+                                <img class="img-fluid" src="assets/img/portfolio/fullsize/lab11_5_-3_trial2_map.jpg" alt=" Trial 2 Map" /> 
+                                <!-- Localization Belief Trial 2 -->
+                                <img class="img-fluid" src="assets/img/portfolio/fullsize/lab11_5_-3_trial2_beliefs.jpg" alt=" Trial 2 Belief" /> 
+                                <p></p>                                
+                                <h7 class="mt-4"><b>(-3, -2)</b></h7>
+                                <p></p>
+                                <!-- Localization Trial 1 -->
+                                <img class="img-fluid" src="assets/img/portfolio/fullsize/lab11_-3_-2_trial1_map.jpg" alt=" Trial 1 Map" />     
+                                <!-- Localization Belief Trial 1 -->
+                                <img class="img-fluid" src="assets/img/portfolio/fullsize/lab11_-3_-2_trial1_beliefs.jpg" alt=" Trial 1 Beleif" /> 
+                                <!-- Localization Trial 2-->
+                                <img class="img-fluid" src="assets/img/portfolio/fullsize/lab11_-3_-2_trial2_map.jpg" alt=" Trial 2 Map" /> 
+                                <!-- Localization Belief Trial 2 -->
+                                <img class="img-fluid" src="assets/img/portfolio/fullsize/lab11_-3_-2_trial2_beliefs.jpg" alt=" Trial 2 Belief" /> 
+                                <p></p>  
+                                <h7 class="mt-4"><b>(0, 3)</b></h7>
+                                <p></p>
+                                <!-- Localization Trial 1 -->
+                                <img class="img-fluid" src="assets/img/portfolio/fullsize/lab11_0_3_trial1_map.jpg" alt=" Trial 1 Map" />     
+                                <!-- Localization Belief Trial 1 -->
+                                <img class="img-fluid" src="assets/img/portfolio/fullsize/lab11_0_3_trial1_beliefs.jpg" alt=" Trial 1 Beleif" /> 
+                                <!-- Localization Trial 2-->
+                                <img class="img-fluid" src="assets/img/portfolio/fullsize/lab11_0_3_trial2_map.jpg" alt=" Trial 2 Map" /> 
+                                <!-- Localization Belief Trial 2 -->
+                                <img class="img-fluid" src="assets/img/portfolio/fullsize/lab11_0_3_trial2_beliefs.jpg" alt=" Trial 2 Belief" /> 
+                                <p></p> 
+                                <h7 class="mt-4"><b>(5, 3)</b></h7>
+                                <p></p>
+                                <!-- Localization Trial 1 -->
+                                <img class="img-fluid" src="assets/img/portfolio/fullsize/lab11_5_3_trial1_map.jpg" alt=" Trial 1 Map" />     
+                                <!-- Localization Belief Trial 1 -->
+                                <img class="img-fluid" src="assets/img/portfolio/fullsize/lab11_5_3_trial1_beliefs.jpg" alt=" Trial 1 Beleif" /> 
+                                <!-- Localization Trial 2-->
+                                <img class="img-fluid" src="assets/img/portfolio/fullsize/lab11_5_3_trial2_map.jpg" alt=" Trial 2 Map" /> 
+                                <!-- Localization Belief Trial 2 -->
+                                <img class="img-fluid" src="assets/img/portfolio/fullsize/lab11_5_3_trial2_beliefs.jpg" alt=" Trial 2 Belief" /> 
+                                <p></p>  
+                                <h7 class="mt-4"><u>References</u></h7>
+                                <p></p>
+                                <p>I referenced Wenyi Fu's page to implement the Bayes filter.</p>
+                                <p></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <!-- Modal 10 -->
                 <div class="modal fade" id="portfolioModal10" tabindex="-1" aria-labelledby="portfolioModal10Label" aria-hidden="true">
                     <div class="modal-dialog">
