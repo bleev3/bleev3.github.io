@@ -330,13 +330,200 @@
                 </div>
                 <!-- Portfolio Item 9 -->
                 <div class="col-lg-4 col-sm-6">
-                    <a class="portfolio-box" href="#" data-bs-toggle="modal" data-bs-target="#portfolioModal10">
+                    <a class="portfolio-box" href="#" data-bs-toggle="modal" data-bs-target="#portfolioModal9">
                         <img class="img-fluid" src="assets/img/portfolio/thumbnails/final_map.jpg" alt="..." />
                         <div class="portfolio-box-caption">
                             <div class="project-category text-white-50">Lab 9</div>
                             <div class="project-name">Mapping</div>
                         </div>
                     </a>
+                </div>
+                <!-- Modal 9 -->
+                <div class="modal fade" id="portfolioModal9" tabindex="-1" aria-labelledby="portfolioModal9Label" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="portfolioModal9Label">Lab 9: Mapping</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <img class="img-fluid" src="assets/img/portfolio/thumbnails/final_map.jpg" alt="Final Map" />
+                                <p>In this lab, the objective is to create a map of the room by slowly rotating the robot on 
+                                    its' axis and taking ToF measurements.
+                                </p>
+                                <h7 class="mt-4"><u>Control for Turning and Taking ToF Data</u></h7>
+                                <p></p>
+                                <p></p>
+                                <h7 class="mt-4">Getting the Robot to Spin 360 Degrees</h7>
+                                <p></p>
+                                <p> In order to turn the robot slowly so it goes 360 degrees, I opted to use my orientation PID control
+                                    from lab 6 with a slight modification. 
+                                    I used a for loop to change my target angle by incrementing the current
+                                    target angle by some fixed increment value (in my case 10 degrees). After either the robot gets to 
+                                    the target angle or the orientation PID times out, then the robot stops. The time, current angle, target angle, and 
+                                    one distance measurement from the ToF sensor is recorded. Then, the loop starts again and we increment the target
+                                    angle by the increment value until we reach 360 degrees. I used a while loop to ensure that I 
+                                    collect 36 ToF distance measurements for each 360 degree rotation.
+                                    Also, I added a delay at the beginning in order to try to resolve
+                                    the issue of my DMP angle measurements not being stable when I first start my orientation PID controller.
+                                </p>
+                                <p></p>
+                                <h7 class="mt-4">Code for 360 Degree Turn and ToF Distance Recording</h7>
+                                <p></p>
+                                <!-- Arduino Code -->
+                                <script src="https://gist.github.com/bleev3/712fb09d2957e290555fdd5cc0fd5a8b.js"></script>
+                                <!-- Python Code -->
+                                <script src="https://gist.github.com/bleev3/657d67a9df120354d87875709f5c2046.js"></script>
+                                <p></p>
+                                <h7 class="mt-4">Modification to Orientation PID Control</h7>
+                                <p></p>
+                                <p>Since the DMP has a range of -180 to 180 degrees, I had to map -180 to 180 degrees into 
+                                    0 to 360 degrees. In my case, since there is still some bias in the DMP angle measurement,
+                                    instead of adding 360 degrees when the yaw angle is less than 0, I added 360 when the yaw angle
+                                    is less than -2 degrees. 
+                                </p>
+                                <p></p>
+                                <h7 class="mt-4">Code for Modification to Orientation PID Control</h7>
+                                <!-- Arduino Code -->
+                                <script src="https://gist.github.com/bleev3/88d03856e2c08313a36accc4f8db9c64.js"></script>
+                                <p></p>
+                                <h7 class="mt-4"><u>Testing Code in Sample Room</u></h7>
+                                <p></p>
+                                <p>I tried testing my mapping code in a small room where to the left and right of the robot, there was empty space/a hall
+                                    and in the front of the robot, there was a cabinet. The first thing I did was do a ow 360 degree turn and take
+                                    distance measurements every 10 degrees. Then, I converted my yaw angle measurements from degrees to radians
+                                    so that I could make a polar plot that plotted the distance measurements at that particular angle.
+                                    Below are the graphs showing my orientation PID working since the target angle and current angle that the robot is at
+                                    is fairly close and my polar plot.
+                                    Under the graphs, I have also provided the code to make the polar plot.
+                                </p>
+                                <!-- Videos Showing Robot Turns on Axis -->
+                                <div class="embed-container">
+                                    <iframe width="400" height="400" src="https://www.youtube.com/embed/haKMslZEQHU"
+                                    frameborder="0" allowfullscreen></iframe>
+                                </div>
+                                <!-- Plots for Mapping-->
+                                <p><b>Angle vs Time Graph</b></p>
+                                <p></p>
+                                <p>At the beginning, the robot still needs time for the DMP measurements to stabilize so it does not reach the target angle that well.
+                                    After about 4 or 5 trials, then the robots gets to the target angle fairly well.
+                                </p>
+                                <p></p>
+                                <img class="img-fluid" src="assets/img/portfolio/fullsize/mapping_angle_test.jpg" alt=" Angle vs Time" />
+                                <p><b>Distance vs Time Graph</b></p>
+                                <img class="img-fluid" src="assets/img/portfolio/fullsize/mapping_distance_test.jpg" alt=" Distance vs Time" />
+                                <p><b>Polar Plot</b></p>
+                                <img class="img-fluid" src="assets/img/portfolio/fullsize/mapping_polar_plot_test.jpg" alt=" Polar Plot" />
+                                <p></p>
+                                <!-- Python Code -->
+                                <p><b>Python Code for Polar Plot</b></p>
+                                <script src="https://gist.github.com/bleev3/8731a4b7039dc32a70e2a5ef68146586.js"></script>
+                                <p></p>
+                                <h7 class="mt-4">Transformation Matrices and Getting the Linear Plot</h7>
+                                <p></p>
+                                <p>I referenced Daria Kot's page and lecture 2 slides in order to make my transformation matrices code.
+                                    First, I calculated the rotation matrix when rotating around the z axis. Then, I calculated the distance 
+                                    matrix by using my ToF distance measurement and adding to that the offset that my ToF is to the center of my robot.
+                                    In my case, my ToF sensor is 76 mm offset from the x axis and 7.62 mm offset from the y axis.
+                                    Then, I calculated the position matrix by getting the global position of the robot in the arena and multiplying by
+                                    304.8 (1 foot is 304.8 mm) so that all of my distance measurements would be in millimeters.
+                                </p>
+                                <p></p>
+                                <img class="img-fluid" src="assets/img/portfolio/fullsize/transf_matrix.jpg" alt="Transformation Matrix" />
+                                <img class="img-fluid" src="assets/img/portfolio/fullsize/position_matrix.jpg" alt="Position Matrix" />
+                                <p><b>Linear Plot</b></p>
+                                <img class="img-fluid" src="assets/img/portfolio/fullsize/mapping_linear_plot_test.jpg" alt="Linear Plot" />
+                                <p></p>
+                                <!-- Python Code -->
+                                <p><b>Python Code for Linear Plot</b></p>
+                                <script src="https://gist.github.com/bleev3/169857b31cc646c7820fef772404ca68.js"></script>
+                                <p></p>
+                                <p>On average, I would say based on a rough estimation, the average error of my map would be about 
+                                    5 inches or so on each side for a maximum error of 20 inches since my robot drifts a bit by about 5 inches while it is making the 360 degree turn. </p>
+                                <p></p>
+                                <h7 class="mt-4"><u>Mapping the Arena</u></h7>
+                                <p></p>
+                                <p> Once I was confident that my transformation matrix was working with my yaw angle measurements and ToF distance measurements, 
+                                    I put my robot in the arena. I got two 360 degree rotation datasets for each of the 4 points (5,-3), (5,3), (0,3), and (-3,-2).
+                                    Then, I analyzed my data using the polar plot transformation and polar to linear plot transformation on each of my
+                                    datasets. After getting my polar and linear graphs for each point, I overlayed each final x and y linear plot to
+                                    get the final map.
+                                    The only post processing correction I had to make was making all of my yaw angles negative because my robot was
+                                    turning clockwise but the original map assumes that the robot is turning counterclockwise.
+                                </p>
+                                <p></p>
+                                <p>Here's an example of my calculations to get the polar and linear plot for the point (5,-3).</p>
+                                <p></p>
+                                <p><b>Code for Polar Plot</b></p>
+                                <script src="https://gist.github.com/bleev3/02bd8acc6c3159e8fb799d8772836d00.js"></script>
+                                <p></p>
+                                <p><b>Code for Linear Plot</b></p>
+                                <script src="https://gist.github.com/bleev3/f65c92a6489dbb1c1db5175bfe566f76.js"></script>
+                                <p></p>
+                                <p>These are the graphs from my second trial and the resulting map with the x and y axis being in millimeters. It was more noisy most likely due to other cars 
+                                    being in the arena at the same time that I was taking distance measurements. </p>
+                                <p></p>
+                                <p><b>Polar Plots</b></p>
+                                <img class="img-fluid" src="assets/img/portfolio/fullsize/5_-3_trial2_polar.jpg" alt="(5,-3)" />
+                                <p></p>
+                                <img class="img-fluid" src="assets/img/portfolio/fullsize/5_3_trial2_polar.jpg" alt="(5,3)" />
+                                <p></p>
+                                <img class="img-fluid" src="assets/img/portfolio/fullsize/0_3_trial2_polar.jpg" alt="(0,3)" />
+                                <p></p>
+                                <img class="img-fluid" src="assets/img/portfolio/fullsize/-3_-2_trial2_polar.jpg" alt="(-3,-2)" />
+                                <p></p>
+                                <p><b>Linear Plots</b></p>
+                                <img class="img-fluid" src="assets/img/portfolio/fullsize/5_-3_trial2_linear.jpg" alt="(5,-3)" />
+                                <p></p>
+                                <img class="img-fluid" src="assets/img/portfolio/fullsize/5_3_trial2_linear.jpg" alt="(5,3)" />
+                                <p></p>
+                                <img class="img-fluid" src="assets/img/portfolio/fullsize/0_3_trial2_linear.jpg" alt="(0,3)" />
+                                <p></p>
+                                <img class="img-fluid" src="assets/img/portfolio/fullsize/-3_-2_trial2_linear.jpg" alt="(-3,-2)" />
+                                <p></p>
+                                <p><b>Map from Trial 2</b></p>
+                                <img class="img-fluid" src="assets/img/portfolio/fullsize/trial2_map_arena.jpg" alt="Trial 2 Map Arena" />
+                                <p></p>
+                                <p>These are the graphs from my first trial and the resulting map with the x and y axis being in millimeters. I also saved the endpoints for the straight lines that 
+                                    I made to show the outline of the arena. 
+                                    I will use this map in future labs for localization and planning.</p>
+                                <p></p>
+                                <p><b>Polar Plots</b></p>
+                                <img class="img-fluid" src="assets/img/portfolio/fullsize/5_-3_trial1_polar.jpg" alt="(5,-3)" />
+                                <p></p>
+                                <img class="img-fluid" src="assets/img/portfolio/fullsize/5_3_trial1_polar.jpg" alt="(5,3)" />
+                                <p></p>
+                                <img class="img-fluid" src="assets/img/portfolio/fullsize/0_3_trial1_polar.jpg" alt="(0,3)" />
+                                <p></p>
+                                <img class="img-fluid" src="assets/img/portfolio/fullsize/-3_-2_trial1_polar.jpg" alt="(-3,-2)" />
+                                <p></p>
+                                <p><b>Linear Plots</b></p>
+                                <img class="img-fluid" src="assets/img/portfolio/fullsize/5_-3_trial1_linear.jpg" alt="(5,-3)" />
+                                <p></p>
+                                <img class="img-fluid" src="assets/img/portfolio/fullsize/5_3_trial1_linear.jpg" alt="(5,3)" />
+                                <p></p>
+                                <img class="img-fluid" src="assets/img/portfolio/fullsize/0_3_trial1_linear.jpg" alt="(0,3)" />
+                                <p></p>
+                                <img class="img-fluid" src="assets/img/portfolio/fullsize/-3_-2_trial1_linear.jpg" alt="(-3,-2)" />
+                                <p></p>
+                                <p><b>Map from Trial 1</b></p>
+                                <img class="img-fluid" src="assets/img/portfolio/fullsize/trial1_map_arena.jpg" alt="Trial 1 Map Arena" />
+                                <p></p>
+                                <p><b>X and Y Boundaries</b></p>
+                                <script src="https://gist.github.com/bleev3/bb5c0df63e2c294a6d5d58ca63a1cf48.js"></script>
+                                <p></p>
+                                <h7 class="mt-4"><u>Discussion</u></h7>
+                                <p></p>
+                                <p>It was very rewarding seeing how I could use my data from my ToF sensor and DMP in order to create a map of the room.</p>
+                                <p></p>
+                                <h7 class="mt-4"><u>References</u></h7>
+                                <p></p>
+                                <p>I worked with Annabel Lian and Katarina Duric on this lab by sharing ideas of how to implement the 360 degree turn.</p>
+                                <p></p>
+
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <!-- Portfolio Item 10 -->
                 <div class="col-lg-4 col-sm-6">
@@ -608,193 +795,7 @@
                         </div>
                     </div>
                 </div>
-                <!-- Modal 9 -->
-                <div class="modal fade" id="portfolioModal9" tabindex="-1" aria-labelledby="portfolioModal9Label" aria-hidden="true">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="portfolioModal9Label">Lab 9: Mapping</h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                            </div>
-                            <div class="modal-body">
-                                <img class="img-fluid" src="assets/img/portfolio/thumbnails/final_map.jpg" alt="Final Map" />
-                                <p>In this lab, the objective is to create a map of the room by slowly rotating the robot on 
-                                    its' axis and taking ToF measurements.
-                                </p>
-                                <h7 class="mt-4"><u>Control for Turning and Taking ToF Data</u></h7>
-                                <p></p>
-                                <p></p>
-                                <h7 class="mt-4">Getting the Robot to Spin 360 Degrees</h7>
-                                <p></p>
-                                <p> In order to turn the robot slowly so it goes 360 degrees, I opted to use my orientation PID control
-                                    from lab 6 with a slight modification. 
-                                    I used a for loop to change my target angle by incrementing the current
-                                    target angle by some fixed increment value (in my case 10 degrees). After either the robot gets to 
-                                    the target angle or the orientation PID times out, then the robot stops. The time, current angle, target angle, and 
-                                    one distance measurement from the ToF sensor is recorded. Then, the loop starts again and we increment the target
-                                    angle by the increment value until we reach 360 degrees. I used a while loop to ensure that I 
-                                    collect 36 ToF distance measurements for each 360 degree rotation.
-                                    Also, I added a delay at the beginning in order to try to resolve
-                                    the issue of my DMP angle measurements not being stable when I first start my orientation PID controller.
-                                </p>
-                                <p></p>
-                                <h7 class="mt-4">Code for 360 Degree Turn and ToF Distance Recording</h7>
-                                <p></p>
-                                <!-- Arduino Code -->
-                                <script src="https://gist.github.com/bleev3/712fb09d2957e290555fdd5cc0fd5a8b.js"></script>
-                                <!-- Python Code -->
-                                <script src="https://gist.github.com/bleev3/657d67a9df120354d87875709f5c2046.js"></script>
-                                <p></p>
-                                <h7 class="mt-4">Modification to Orientation PID Control</h7>
-                                <p></p>
-                                <p>Since the DMP has a range of -180 to 180 degrees, I had to map -180 to 180 degrees into 
-                                    0 to 360 degrees. In my case, since there is still some bias in the DMP angle measurement,
-                                    instead of adding 360 degrees when the yaw angle is less than 0, I added 360 when the yaw angle
-                                    is less than -2 degrees. 
-                                </p>
-                                <p></p>
-                                <h7 class="mt-4">Code for Modification to Orientation PID Control</h7>
-                                <!-- Arduino Code -->
-                                <script src="https://gist.github.com/bleev3/88d03856e2c08313a36accc4f8db9c64.js"></script>
-                                <p></p>
-                                <h7 class="mt-4"><u>Testing Code in Sample Room</u></h7>
-                                <p></p>
-                                <p>I tried testing my mapping code in a small room where to the left and right of the robot, there was empty space/a hall
-                                    and in the front of the robot, there was a cabinet. The first thing I did was do a ow 360 degree turn and take
-                                    distance measurements every 10 degrees. Then, I converted my yaw angle measurements from degrees to radians
-                                    so that I could make a polar plot that plotted the distance measurements at that particular angle.
-                                    Below are the graphs showing my orientation PID working since the target angle and current angle that the robot is at
-                                    is fairly close and my polar plot.
-                                    Under the graphs, I have also provided the code to make the polar plot.
-                                </p>
-                                <!-- Videos Showing Robot Turns on Axis -->
-                                <div class="embed-container">
-                                    <iframe width="400" height="400" src="https://www.youtube.com/embed/haKMslZEQHU"
-                                    frameborder="0" allowfullscreen></iframe>
-                                </div>
-                                <!-- Plots for Mapping-->
-                                <p><b>Angle vs Time Graph</b></p>
-                                <p></p>
-                                <p>At the beginning, the robot still needs time for the DMP measurements to stabilize so it does not reach the target angle that well.
-                                    After about 4 or 5 trials, then the robots gets to the target angle fairly well.
-                                </p>
-                                <p></p>
-                                <img class="img-fluid" src="assets/img/portfolio/fullsize/mapping_angle_test.jpg" alt=" Angle vs Time" />
-                                <p><b>Distance vs Time Graph</b></p>
-                                <img class="img-fluid" src="assets/img/portfolio/fullsize/mapping_distance_test.jpg" alt=" Distance vs Time" />
-                                <p><b>Polar Plot</b></p>
-                                <img class="img-fluid" src="assets/img/portfolio/fullsize/mapping_polar_plot_test.jpg" alt=" Polar Plot" />
-                                <p></p>
-                                <!-- Python Code -->
-                                <p><b>Python Code for Polar Plot</b></p>
-                                <script src="https://gist.github.com/bleev3/8731a4b7039dc32a70e2a5ef68146586.js"></script>
-                                <p></p>
-                                <h7 class="mt-4">Transformation Matrices and Getting the Linear Plot</h7>
-                                <p></p>
-                                <p>I referenced Daria Kot's page and lecture 2 slides in order to make my transformation matrices code.
-                                    First, I calculated the rotation matrix when rotating around the z axis. Then, I calculated the distance 
-                                    matrix by using my ToF distance measurement and adding to that the offset that my ToF is to the center of my robot.
-                                    In my case, my ToF sensor is 76 mm offset from the x axis and 7.62 mm offset from the y axis.
-                                    Then, I calculated the position matrix by getting the global position of the robot in the arena and multiplying by
-                                    304.8 (1 foot is 304.8 mm) so that all of my distance measurements would be in millimeters.
-                                </p>
-                                <p></p>
-                                <img class="img-fluid" src="assets/img/portfolio/fullsize/transf_matrix.jpg" alt="Transformation Matrix" />
-                                <img class="img-fluid" src="assets/img/portfolio/fullsize/position_matrix.jpg" alt="Position Matrix" />
-                                <p><b>Linear Plot</b></p>
-                                <img class="img-fluid" src="assets/img/portfolio/fullsize/mapping_linear_plot_test.jpg" alt="Linear Plot" />
-                                <p></p>
-                                <!-- Python Code -->
-                                <p><b>Python Code for Linear Plot</b></p>
-                                <script src="https://gist.github.com/bleev3/169857b31cc646c7820fef772404ca68.js"></script>
-                                <p></p>
-                                <p>On average, I would say based on a rough estimation, the average error of my map would be about 
-                                    5 inches or so on each side for a maximum error of 20 inches since my robot drifts a bit by about 5 inches while it is making the 360 degree turn. </p>
-                                <p></p>
-                                <h7 class="mt-4"><u>Mapping the Arena</u></h7>
-                                <p></p>
-                                <p> Once I was confident that my transformation matrix was working with my yaw angle measurements and ToF distance measurements, 
-                                    I put my robot in the arena. I got two 360 degree rotation datasets for each of the 4 points (5,-3), (5,3), (0,3), and (-3,-2).
-                                    Then, I analyzed my data using the polar plot transformation and polar to linear plot transformation on each of my
-                                    datasets. After getting my polar and linear graphs for each point, I overlayed each final x and y linear plot to
-                                    get the final map.
-                                    The only post processing correction I had to make was making all of my yaw angles negative because my robot was
-                                    turning clockwise but the original map assumes that the robot is turning counterclockwise.
-                                </p>
-                                <p></p>
-                                <p>Here's an example of my calculations to get the polar and linear plot for the point (5,-3).</p>
-                                <p></p>
-                                <p><b>Code for Polar Plot</b></p>
-                                <script src="https://gist.github.com/bleev3/02bd8acc6c3159e8fb799d8772836d00.js"></script>
-                                <p></p>
-                                <p><b>Code for Linear Plot</b></p>
-                                <script src="https://gist.github.com/bleev3/f65c92a6489dbb1c1db5175bfe566f76.js"></script>
-                                <p></p>
-                                <p>These are the graphs from my second trial and the resulting map with the x and y axis being in millimeters. It was more noisy most likely due to other cars 
-                                    being in the arena at the same time that I was taking distance measurements. </p>
-                                <p></p>
-                                <p><b>Polar Plots</b></p>
-                                <img class="img-fluid" src="assets/img/portfolio/fullsize/5_-3_trial2_polar.jpg" alt="(5,-3)" />
-                                <p></p>
-                                <img class="img-fluid" src="assets/img/portfolio/fullsize/5_3_trial2_polar.jpg" alt="(5,3)" />
-                                <p></p>
-                                <img class="img-fluid" src="assets/img/portfolio/fullsize/0_3_trial2_polar.jpg" alt="(0,3)" />
-                                <p></p>
-                                <img class="img-fluid" src="assets/img/portfolio/fullsize/-3_-2_trial2_polar.jpg" alt="(-3,-2)" />
-                                <p></p>
-                                <p><b>Linear Plots</b></p>
-                                <img class="img-fluid" src="assets/img/portfolio/fullsize/5_-3_trial2_linear.jpg" alt="(5,-3)" />
-                                <p></p>
-                                <img class="img-fluid" src="assets/img/portfolio/fullsize/5_3_trial2_linear.jpg" alt="(5,3)" />
-                                <p></p>
-                                <img class="img-fluid" src="assets/img/portfolio/fullsize/0_3_trial2_linear.jpg" alt="(0,3)" />
-                                <p></p>
-                                <img class="img-fluid" src="assets/img/portfolio/fullsize/-3_-2_trial2_linear.jpg" alt="(-3,-2)" />
-                                <p></p>
-                                <p><b>Map from Trial 2</b></p>
-                                <img class="img-fluid" src="assets/img/portfolio/fullsize/trial2_map_arena.jpg" alt="Trial 2 Map Arena" />
-                                <p></p>
-                                <p>These are the graphs from my first trial and the resulting map with the x and y axis being in millimeters. I also saved the endpoints for the straight lines that 
-                                    I made to show the outline of the arena. 
-                                    I will use this map in future labs for localization and planning.</p>
-                                <p></p>
-                                <p><b>Polar Plots</b></p>
-                                <img class="img-fluid" src="assets/img/portfolio/fullsize/5_-3_trial1_polar.jpg" alt="(5,-3)" />
-                                <p></p>
-                                <img class="img-fluid" src="assets/img/portfolio/fullsize/5_3_trial1_polar.jpg" alt="(5,3)" />
-                                <p></p>
-                                <img class="img-fluid" src="assets/img/portfolio/fullsize/0_3_trial1_polar.jpg" alt="(0,3)" />
-                                <p></p>
-                                <img class="img-fluid" src="assets/img/portfolio/fullsize/-3_-2_trial1_polar.jpg" alt="(-3,-2)" />
-                                <p></p>
-                                <p><b>Linear Plots</b></p>
-                                <img class="img-fluid" src="assets/img/portfolio/fullsize/5_-3_trial1_linear.jpg" alt="(5,-3)" />
-                                <p></p>
-                                <img class="img-fluid" src="assets/img/portfolio/fullsize/5_3_trial1_linear.jpg" alt="(5,3)" />
-                                <p></p>
-                                <img class="img-fluid" src="assets/img/portfolio/fullsize/0_3_trial1_linear.jpg" alt="(0,3)" />
-                                <p></p>
-                                <img class="img-fluid" src="assets/img/portfolio/fullsize/-3_-2_trial1_linear.jpg" alt="(-3,-2)" />
-                                <p></p>
-                                <p><b>Map from Trial 1</b></p>
-                                <img class="img-fluid" src="assets/img/portfolio/fullsize/trial1_map_arena.jpg" alt="Trial 1 Map Arena" />
-                                <p></p>
-                                <p><b>X and Y Boundaries</b></p>
-                                <script src="https://gist.github.com/bleev3/bb5c0df63e2c294a6d5d58ca63a1cf48.js"></script>
-                                <p></p>
-                                <h7 class="mt-4"><u>Discussion</u></h7>
-                                <p></p>
-                                <p>It was very rewarding seeing how I could use my data from my ToF sensor and DMP in order to create a map of the room.</p>
-                                <p></p>
-                                <h7 class="mt-4"><u>References</u></h7>
-                                <p></p>
-                                <p>I worked with Annabel Lian and Katarina Duric on this lab by sharing ideas of how to implement the 360 degree turn.</p>
-                                <p></p>
 
-                            </div>
-                        </div>
-                    </div>
-                </div>
                 <!-- Modal 8 -->
                 <div class="modal fade" id="portfolioModal8" tabindex="-1" aria-labelledby="portfolioModal8Label" aria-hidden="true">
                     <div class="modal-dialog">
