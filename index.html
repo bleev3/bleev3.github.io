@@ -545,7 +545,147 @@
                         </div>
                     </a>
                 </div>
+                <!-- Portfolio Item 12 -->
+                <div class="col-lg-4 col-sm-6">
+                    <a class="portfolio-box" href="#" data-bs-toggle="modal" data-bs-target="#portfolioModal12">
+                        <img class="img-fluid" src="assets/img/portfolio/thumbnails/lab12_path.jpg" alt="..." />
+                        <div class="portfolio-box-caption">
+                            <div class="project-category text-white-50">Lab 12</div>
+                            <div class="project-name">Path Planning and Execution</div>
+                        </div>
+                    </a>
+                </div>
                 <!-- All Modals/Content for Labs Go Here -->
+                <!-- Modal 12 -->
+                <div class="modal fade" id="portfolioModal12" tabindex="-1" aria-labelledby="portfolioModal12Label" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="portfolioModal12Label">Lab 12: Path Planning and Execution</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <img class="img-fluid" src="assets/img/portfolio/fullsize/Labeled_Path.jpg" alt="Map for Path Planning" />
+                                <p></p>
+                                <p>In this lab, the objective is to make the robot follow a path on the map in the lab. 
+                                </p>
+                                <h7 class="mt-4"><u>Path Planning Ideas</u></h7>
+                                <p></p>
+                                <p> In this lab, I worked with Annabel Lian to determine the best way to go about navigating the map.
+                                    The first idea was to use localization and then determine the distance and angle needed to find the direction
+                                    vector to go from one way point to another. However, my localization was not always accurate because sometimes, the robot
+                                    would believe that it is in the top right corner when it is actually in the bottom left corner. 
+                                    Therefore, we decided to use localization as a way to see whether our robot was detecting itself in approximately the correct 
+                                    location at specific waypoints.  
+                                </p>
+                                <p></p>
+                                <p>The method we ended up choosing was localizing at the start position (-4, -3) and then using orientation PID and 
+                                    open loop straight line motion to get across the first 3 legs of the path. We chose orientation PID control and open loop 
+                                    straight line motion since there were no clearly defined walls in the robot's viewpoint. For the first leg, depending on how well
+                                    the robot got to the target angle, it could see either the left wall closest to it, the left wall of the square on the map, or the 
+                                    back wall along the top of the map. By using open loop straight line motion, we could experimentally determine the time in milliseconds
+                                    it would take to get to the next waypoint.
+                                </p>
+                                <p></p>
+                                <p>For the rest of the map, we used a combination of linear PID control and orientation PID control because there were clearly defined walls 
+                                    in the robot's field of view so we could set a target distance for the robot to stop before hitting the wall. We also localized in the top right corner to 
+                                    make sure that the robot was approximately following the correct path and at the end of the path (origin: (0, 0)) to confirm that the robot
+                                    was approximately at the correct ending position.
+                                </p>
+                                <p></p>
+                                <p>Below is the Arduino code for localization, orientation PID, linear PID, and open loop control for straight line motion.</p>
+                                <!-- Arduino Code -->
+                                <img class="img-fluid" src="assets/img/portfolio/fullsize/localize.jpg" alt=" Localization" /> 
+                                <img class="img-fluid" src="assets/img/portfolio/fullsize/run_orient_pi.jpg" alt="Orientation PID" /> 
+                                <img class="img-fluid" src="assets/img/portfolio/fullsize/pause.jpg" alt="Localization Data" /> 
+                                <img class="img-fluid" src="assets/img/portfolio/fullsize/start_orient_pid.jpg" alt=" Start Orientation PID" /> 
+                                <img class="img-fluid" src="assets/img/portfolio/fullsize/turnleft_case.jpg" alt=" Turn Left" /> 
+                                <img class="img-fluid" src="assets/img/portfolio/fullsize/turnright_case.jpg" alt=" Turn Right" /> 
+                                <img class="img-fluid" src="assets/img/portfolio/fullsize/linear_pid.jpg" alt=" Linear PID" />
+                                <!-- Forwards and Backwards Functions for Linear PID -->
+                                <script src="https://gist.github.com/bleev3/648cd23a0fb1e5f3fbcb7c49560d952e.js"></script>
+                                <p></p>
+                               
+                                <p></p>
+                                <p> Here is the Python code we used for localization which is similar to the code used in lab 11 as well as the final code used to execute the commands
+                                    so that the robot could traverse the entire path.
+                                </p>
+                                <!-- Localization Python Code -->
+                                <h7 class="mt-4"><b>Localization Python Code</b></h7>
+                                <script src="https://gist.github.com/bleev3/c1673d5674bf15b0405de5dc2723f0b4.js"></script>
+                                <script src="https://gist.github.com/bleev3/0516672dc2acd6ae0929c69493f64403.js"></script>
+                                <!-- Final Code -->
+                                <h7 class="mt-4"><b>Final Path Python Code</b></h7>
+                                <script src="https://gist.github.com/bleev3/4be196ab6d66793c9549fb883de1ac2a.js"></script>
+                                <p></p>
+                                <h7 class="mt-4"><b>Challenges</b></h7>
+                                <p></p>
+                                <p>The most difficult part was implementing the open loop correctly since depending on the battery level for the motor 
+                                    and the PWM signal being sent to the motor, the robot would either severly undershoot or overshoot the target spot.
+                                    Therefore, we had to do numerous testing and tuning of the PWM signal and time that the open loop would run
+                                    in order to account for the changing battery level during each test. 
+                                    Also, we tried tuning the PID parameters Kp and Ki for oreintation and linear PID so that there would be less drifting and 
+                                    sliding of the robot. However, we did not have enough time to fully stabliize the robot so that it would settle at roughly the 
+                                    target angle/target distance. Therefore, in the final run video, you see the robot move slightly backwards when it is executing orientation 
+                                    PID control and oscillatory behavior when the robot is executing linear PID control.  
+                                    Another challenge we faced was figuring the wait time before switching from localization to PID control to open loop control.
+                                    We found that if the sleep time was less than 15-20 seconds, the robot would prematurely stop orientation PID control and not reach the target angle.
+                                    Then, it would undershoot when going to the next command: either open loop or linear PID control. Also, if it was longer than 15-20 seconds, then we would
+                                    be waiting a long time for the robot to move to the next command which was inefficient.                               
+                                </p>
+                                <p></p>                            
+                                <h7 class="mt-4"><b>Final Results</b></h7>
+                                <p></p>
+                                <p> Overall, as seen from the video, the robot was roughly able to follow the path through our execution of commands with a little bit of overshoot and undershoot
+                                    due to our tuning parameters of time and PID parameters Kp and Ki for orientation and linear PID control.
+                                    Below is the video of our successful run and the results of the localization of the points (-4,-3), (5, 3), and (0, 0). 
+                                    Based on my results, the robot was able to accurately determine the localized pose within approximately 2 feet
+                                    of the actual point. </p>
+                                <p></p>
+                                <!-- Final Path Video -->
+                                <div class="embed-container">
+                                    <iframe width="400" height="400" src="https://www.youtube.com/embed/WxfQ3KCTtlY"
+                                    frameborder="0" allowfullscreen></iframe>
+                                </div>
+                                <div class="embed-container">
+                                    <iframe width="400" height="400" src="https://www.youtube.com/embed/mok30GirRd0"
+                                    frameborder="0" allowfullscreen></iframe>
+                                </div>
+                                <h7 class="mt-4"><b>(-4, -3)</b></h7>
+                                <p></p>
+                                <!-- Localization Trial 1 -->
+                                <img class="img-fluid" src="assets/img/portfolio/fullsize/start_pt_localization.jpg" alt=" Starting Point Localization" />     
+                                <p></p>                                
+                                <h7 class="mt-4"><b>(5, 3)</b></h7>
+                                <p></p>
+                                <!-- Localization Trial 1 -->
+                                <img class="img-fluid" src="assets/img/portfolio/fullsize/top_rt_corner_localization.jpg" alt=" Top Right Corner Localization" />     
+                                <p></p>  
+                                <h7 class="mt-4"><b>(0, 0)</b></h7>
+                                <p></p>
+                                <!-- Localization Trial 1 -->
+                                <img class="img-fluid" src="assets/img/portfolio/fullsize/origin_localization.jpg" alt=" Origin (0,0) Localization" />     
+                                <p></p>  
+                                <h7 class="mt-4"><u>Conclusion</u></h7>
+                                <p></p>
+                                <p>Overall, we were able to get one successful run after about 10 attempts caused by the variability in performance 
+                                    due to battery level and tuning of the open loop and PID control. In the end, our final succsessful run took approximately 5 minutes
+                                    due to the wait time in between each command.  </p>
+                                <p></p>
+                                <h7 class="mt-4"><u>Collaboration</u></h7>
+                                <p></p>
+                                <p>I worked with Annabel Lian on this lab to implement and test our path execution. </p>
+                                <p></p>
+                                <h7 class="mt-4"><u>Acknowledgements</u></h7>
+                                <p></p>
+                                <p>Thank you to all the course staff for helping me this semester! The class was really fun and fulfilling from building
+                                    my own robot to implementing more complex things such as Kalman and Bayes filter.
+                                </p>
+                                <p></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <!-- Modal 11 -->
                 <div class="modal fade" id="portfolioModal11" tabindex="-1" aria-labelledby="portfolioModal11Label" aria-hidden="true">
                     <div class="modal-dialog">
